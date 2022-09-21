@@ -4,7 +4,8 @@ mkdir build
 cd build
 if errorlevel 1 exit 1
 
-set "CXXFLAGS=%CXXFLAGS% /openmp"
+:: Kokkos build contains a bug and passes -fopenmp instead of /openmp to MSVC
+set "CXXFLAGS=%CXXFLAGS% /openmp:experimental"
 
 cmake ^
 -GNinja ^
