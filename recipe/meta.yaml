@@ -1,5 +1,5 @@
 {% set name = "kokkos" %}
-{% set version = "3.6.01" %}
+{% set version = "3.7.00" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 1b80a70c5d641da9fefbbb652e857d7c7a76a0ebad1f477c253853e209deb8db
+  sha256: 62e3f9f51c798998f6493ed36463f66e49723966286ef70a9dcba329b8443040
 
 build:
 # Requires MSVC >=19.29, but conda-forge does not meet this requirement
-  skip: True  # [win]
+  skip: true  # [win]
   number: 0
   run_exports:
     - {{ pin_subpackage('kokkos') }}
@@ -59,16 +59,10 @@ test:
 about:
   home: https://kokkos.org/
   summary: >
-    Kokkos C++ Performance Portability Programming EcoSystem: The Programming
-    Model - Parallel Execution and Memory Abstraction
+    Kokkos C++ Performance Portability Programming EcoSystem: The Programming Model - Parallel Execution and Memory Abstraction
   description: >
-    Kokkos Core implements a programming model in C++ for writing performance
-    portable applications targeting all major HPC platforms. For that purpose
-    it provides abstractions for both parallel execution of code and data
-    management. Kokkos is designed to target complex node architectures with
-    N-level memory hierarchies and multiple types of execution resources. It
-    currently can use CUDA, HIP, SYCL, HPX, OpenMP and C++ threads as backend
-    programming models with several other backends in development.
+    Kokkos Core implements a programming model in C++ for writing performance portable applications targeting all major HPC platforms. For that purpose it provides abstractions for both parallel execution of code and data management. Kokkos is designed to target complex node architectures with N-level memory hierarchies
+    and multiple types of execution resources. It currently can use CUDA, HIP, SYCL, HPX, OpenMP and C++ threads as backend programming models with several other backends in development.
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
