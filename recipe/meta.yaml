@@ -10,8 +10,6 @@ source:
   sha256: 62e3f9f51c798998f6493ed36463f66e49723966286ef70a9dcba329b8443040
 
 build:
-# Requires MSVC >=19.29, but conda-forge does not meet this requirement
-  skip: true  # [win]
   number: 0
   run_exports:
     - {{ pin_subpackage('kokkos') }}
