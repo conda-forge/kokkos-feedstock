@@ -5,7 +5,7 @@ cd build
 if errorlevel 1 exit 1
 
 :: Kokkos build contains a bug and passes -fopenmp instead of /openmp to MSVC
-set "CXXFLAGS=%CXXFLAGS% /openmp:experimental"
+set "CXXFLAGS=%CXXFLAGS% /openmp"
 
 cmake ^
 -GNinja ^
@@ -14,7 +14,7 @@ cmake ^
 -DCMAKE_PREFIX_PATH:PATH="%LIBRARY_PREFIX%" ^
 -DBUILD_SHARED_LIBS=ON ^
 %CMAKE_ARGS% ^
--DKokkos_ENABLE_OPENMP=ON ^
+-DKokkos_ENABLE_OPENMP=OFF ^
 -DKokkos_ENABLE_EXAMPLES=OFF ^
 -DKokkos_ENABLE_SERIAL=ON ^
 %Kokkos_OPT_ARGS% ^
