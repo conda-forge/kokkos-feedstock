@@ -37,6 +37,7 @@ test:
   commands:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
+    - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake  # [win]
   # Testing explicity for all shared libs, but not links
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ version }}  # [linux]
@@ -48,11 +49,14 @@ test:
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
     - test -f $PREFIX/include/Kokkos_Core.hpp  # [unix]
+    - if not exist %LIBRARY_INC%\\Kokkos_Core.hpp  # [win]
   # These are all the binaries
     - test -f $PREFIX/bin/hpcbind  # [unix]
     - test -f $PREFIX/bin/kokkos_launch_compiler  # [unix]
     - test -f $PREFIX/bin/nvcc_wrapper  # [unix]
-
+    - if not exist %LIBRARY_BIN%\\hpcbind  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler  # [win]
+    - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
 about:
   home: https://kokkos.org/
   summary: >
