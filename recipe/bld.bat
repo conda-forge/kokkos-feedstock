@@ -4,6 +4,8 @@ mkdir build
 cd build
 if errorlevel 1 exit 1
 
+set "CXXFLAGS=%CXXFLAGS% /openmp"
+
 cmake ^
 -GNinja ^
 -DCMAKE_BUILD_TYPE=Release ^
