@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
   sha256: 62e3f9f51c798998f6493ed36463f66e49723966286ef70a9dcba329b8443040
+  patches:
+    - msvc.patch
 
 build:
   number: 0
