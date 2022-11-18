@@ -1,5 +1,5 @@
 {% set name = "kokkos" %}
-{% set version = "3.6.01" %}
+{% set version = "3.7.00" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,12 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 1b80a70c5d641da9fefbbb652e857d7c7a76a0ebad1f477c253853e209deb8db
+  sha256: 62e3f9f51c798998f6493ed36463f66e49723966286ef70a9dcba329b8443040
+  patches:
+    - msvc.patch
 
 build:
-# Requires MSVC >=19.29, but conda-forge does not meet this requirement
+  # Upstream does not build shared libs for Windows correctly
   skip: True  # [win]
   number: 0
   run_exports:
@@ -39,6 +41,7 @@ test:
   commands:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
+    - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake  # [win]
   # Testing explicity for all shared libs, but not links
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ version }}  # [linux]
@@ -50,25 +53,21 @@ test:
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
     - test -f $PREFIX/include/Kokkos_Core.hpp  # [unix]
-    - test -f $PREFIX/include/OpenMP/Kokkos_OpenMP_Exec.hpp  # [unix]
+    - if not exist %LIBRARY_INC%\\Kokkos_Core.hpp  # [win]
   # These are all the binaries
     - test -f $PREFIX/bin/hpcbind  # [unix]
     - test -f $PREFIX/bin/kokkos_launch_compiler  # [unix]
     - test -f $PREFIX/bin/nvcc_wrapper  # [unix]
-
+    - if not exist %LIBRARY_BIN%\\hpcbind  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler  # [win]
+    - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
 about:
   home: https://kokkos.org/
   summary: >
-    Kokkos C++ Performance Portability Programming EcoSystem: The Programming
-    Model - Parallel Execution and Memory Abstraction
+    Kokkos C++ Performance Portability Programming EcoSystem: The Programming Model - Parallel Execution and Memory Abstraction
   description: >
-    Kokkos Core implements a programming model in C++ for writing performance
-    portable applications targeting all major HPC platforms. For that purpose
-    it provides abstractions for both parallel execution of code and data
-    management. Kokkos is designed to target complex node architectures with
-    N-level memory hierarchies and multiple types of execution resources. It
-    currently can use CUDA, HIP, SYCL, HPX, OpenMP and C++ threads as backend
-    programming models with several other backends in development.
+    Kokkos Core implements a programming model in C++ for writing performance portable applications targeting all major HPC platforms. For that purpose it provides abstractions for both parallel execution of code and data management. Kokkos is designed to target complex node architectures with N-level memory hierarchies
+    and multiple types of execution resources. It currently can use CUDA, HIP, SYCL, HPX, OpenMP and C++ threads as backend programming models with several other backends in development.
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE

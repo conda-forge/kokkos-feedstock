@@ -1,0 +1,16 @@
+diff --git a/core/src/Threads/Kokkos_ThreadsExec.hpp b/core/src/Threads/Kokkos_ThreadsExec.hpp
+index 238a76554..ccb9a2291 100644
+--- a/core/src/Threads/Kokkos_ThreadsExec.hpp
++++ b/core/src/Threads/Kokkos_ThreadsExec.hpp
+@@ -109,7 +109,11 @@ class ThreadsExec {
+   // Which thread am I stealing from currently
+   int m_current_steal_target;
+   // This thread's owned work_range
++  #ifdef _MSC_VER
++  __declspec(align(16)) Kokkos::pair<long, long> m_work_range;
++  #else
+   Kokkos::pair<long, long> m_work_range __attribute__((aligned(16)));
++  #endif
+   // Team Offset if one thread determines work_range for others
+   long m_team_work_index;
+ 
