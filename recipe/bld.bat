@@ -4,6 +4,10 @@ mkdir build
 cd build
 if errorlevel 1 exit 1
 
+:: Use threads on Windows instead of OpenMP because Kokkos requires
+:: OpenMP>=3.0, but MSVC only implements OpenMP=2.0 as of 09/2022
+:: https://github.com/kokkos/kokkos/issues/5482
+
 cmake ^
 -GNinja ^
 -DCMAKE_BUILD_TYPE=Release ^
@@ -11,7 +15,8 @@ cmake ^
 -DCMAKE_PREFIX_PATH:PATH="%LIBRARY_PREFIX%" ^
 -DBUILD_SHARED_LIBS=ON ^
 %CMAKE_ARGS% ^
--DKokkos_ENABLE_OPENMP=ON ^
+-DKokkos_ENABLE_OPENMP=OFF ^
+-DKokkos_ENABLE_THREADS=ON ^
 -DKokkos_ENABLE_EXAMPLES=OFF ^
 -DKokkos_ENABLE_SERIAL=ON ^
 %Kokkos_OPT_ARGS% ^
