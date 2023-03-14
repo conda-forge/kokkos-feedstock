@@ -14,7 +14,7 @@ source:
 build:
   # Upstream does not build shared libs for Windows correctly
   skip: true  # [win]
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
@@ -28,7 +28,6 @@ build:
   # Kokkos v3.5.00 only lets us optimize for one CUDA arch at a time, so builds for conda-forge not possible
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF
     - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=ON
-
 requirements:
   build:
     - cmake >=3.21.1,<4
