@@ -1,11 +1,11 @@
-About kokkos
-============
+About kokkos-feedstock
+======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/kokkos-feedstock/blob/main/LICENSE.txt)
 
 Home: https://kokkos.org/
 
 Package license: BSD-3-Clause
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/kokkos-feedstock/blob/main/LICENSE.txt)
 
 Summary: Kokkos C++ Performance Portability Programming EcoSystem: The Programming Model - Parallel Execution and Memory Abstraction
 
