@@ -26,3 +26,4 @@ ctest --output-on-failure
 cmake --install .
 
 sed -i.backup "s#/home/conda/feedstock_root/build_artifacts/kokkos_.*/_build_env#${PREFIX}#g" ${PREFIX}/lib/cmake/Kokkos/KokkosConfigCommon.cmake
+rm ${PREFIX}/lib/cmake/Kokkos/KokkosConfigCommon.cmake.backup
