@@ -11,6 +11,8 @@ ${CMAKE_ARGS} \
 -DKokkos_ENABLE_OPENMP=ON \
 -DKokkos_ENABLE_EXAMPLES=OFF \
 -DKokkos_ENABLE_SERIAL=ON \
+-DKokkos_ENABLE_LIBDL:BOOL=OFF \
+-DKokkos_ENABLE_LAUNCH_COMPILER:BOOL=OFF \
 ${Kokkos_OPT_ARGS} \
 ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
@@ -23,5 +25,4 @@ ctest --output-on-failure
 
 cmake --install .
 
-sed -i "s#/home/conda/feedstock_root/build_artifacts/kokkos_.*/_build_env#${PREFIX}#g" ${PREFIX}/lib/cmake/Kokkos/KokkosConfigCommon.cmake
-sed -i "s#/home/conda/feedstock_root/build_artifacts/kokkos_.*/_build_env#${PREFIX}#g" ${PREFIX}/lib/cmake/Kokkos/KokkosTargets.cmake
+sed -i.backup "s#/home/conda/feedstock_root/build_artifacts/kokkos_.*/_build_env#${PREFIX}#g" ${PREFIX}/lib/cmake/Kokkos/KokkosConfigCommon.cmake
