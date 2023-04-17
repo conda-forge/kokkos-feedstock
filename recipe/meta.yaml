@@ -29,9 +29,9 @@ build:
   # Kokkos v3.5.00 only lets us optimize for one CUDA arch at a time, so builds for conda-forge not possible
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF
     - |
-      if [ $HOST_PLATFORM == osx-arm64 ]; then 
-        Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF 
-      else 
+      if [ "$HOST_PLATFORM" == "osx-arm64" ]; then
+        Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF
+      else
         Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=ON
       fi
 
