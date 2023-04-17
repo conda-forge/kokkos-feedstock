@@ -1,6 +1,6 @@
 {% set name = "kokkos" %}
-{% set version = "4.0.00" %}
-{% set so_version = "4.0.0" %}
+{% set version = "3.7.01" %}
+{% set so_version = "3.7.01" %}
 
 package:
   name: {{ name|lower }}
@@ -8,14 +8,14 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 1829a423883d4b44223c7c3a53d3c51671145aad57d7d23e6a1a4bebf710dcf6
+  sha256: 0481b24893d1bcc808ec68af1d56ef09b82a1138a1226d6be27c3b3c3da65ceb
   patches:
     - msvc.patch  # [win]
 
 build:
   # Upstream does not build shared libs for Windows correctly
   skip: true  # [win]
-  number: 0
+  number: 2
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
