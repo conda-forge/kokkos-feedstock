@@ -20,6 +20,8 @@ ${Kokkos_TEST_ARGS} \
 cmake --build . -j $CPU_COUNT
 
 # Tests will take approximately 8 minutes
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
 ctest --output-on-failure
+fi
 
 cmake --install .
