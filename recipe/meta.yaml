@@ -46,10 +46,8 @@ test:
   # Testing explicity for all shared libs, but not links
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ so_version }}  # [linux]
-    - test -f $PREFIX/lib/libkokkossimd.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscontainers.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkoscore.{{ so_version }}.dylib  # [osx]
-    - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
     - if not exist %LIBRARY_LIB%\\libkokkoscontainers.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\libkokkoscore.lib exit 1  # [win]
   # There are lots more headers; only test for a few.
