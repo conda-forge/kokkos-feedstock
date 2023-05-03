@@ -1,6 +1,6 @@
 {% set name = "kokkos" %}
 {% set version = "4.0.01" %}
-{% set so_version = "4.0.0" %}
+{% set so_version = "4.0.1" %}
 
 package:
   name: {{ name|lower }}
