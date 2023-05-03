@@ -186,4 +186,5 @@ Feedstock Maintainers
 
 * [@BastianZim](https://github.com/BastianZim/)
 * [@carterbox](https://github.com/carterbox/)
+* [@vincentmr](https://github.com/vincentmr/)
 
