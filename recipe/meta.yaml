@@ -15,7 +15,7 @@ source:
 build:
   # Upstream does not build shared libs for Windows correctly
   skip: true  # [win]
-  number: 2
+  number: 3
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
