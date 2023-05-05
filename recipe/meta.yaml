@@ -28,7 +28,9 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos v3.5.00 only lets us optimize for one CUDA arch at a time, so builds for conda-forge not possible
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF
-    - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=ON
+    - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=ON   # [not ppc64le]
+    - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF  # [ppc64le]
+
 
 requirements:
   build:
@@ -77,5 +79,6 @@ about:
 
 extra:
   recipe-maintainers:
+    - vincentmr
     - BastianZim
     - carterbox
