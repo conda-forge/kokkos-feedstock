@@ -18,6 +18,8 @@ build:
   # Upstream does not build shared libs for Windows correctly
   skip: true  # [win]
   skip: true  # [cuda_compiler_version == "10.2"]
+  skip: true  # [cuda_compiler_version == "11.0"]
+  skip: true  # [cuda_compiler_version == "11.1"]
   number: 0
   run_exports:
     - {{ pin_subpackage('kokkos') }}
