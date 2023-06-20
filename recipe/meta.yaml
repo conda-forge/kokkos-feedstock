@@ -94,8 +94,8 @@ test:
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     - cmake . -GNinja
-    - cmake --build .
-    - ./example
+    - cmake --build .   # [cuda_compiler_version == "None"]
+    - ./example --help  # [cuda_compiler_version == "None"]
 
 about:
   home: https://kokkos.org/
