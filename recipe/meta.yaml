@@ -58,6 +58,14 @@ requirements:
 {% endif %}
 
 test:
+  source_files:
+    - example/build_cmake_installed
+  requires:
+    - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
+    - {{ compiler('fortran') }}
+    - cmake
+    - ninja
   commands:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
@@ -83,6 +91,12 @@ test:
     - if not exist %LIBRARY_BIN%\\hpcbind  # [win]
     - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler  # [win]
     - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
+  # Test compilation with kokkos
+    - cd example/build_cmake_installed
+    - cmake .
+    - cmake --build .
+    - ./example
+
 about:
   home: https://kokkos.org/
   summary: >
