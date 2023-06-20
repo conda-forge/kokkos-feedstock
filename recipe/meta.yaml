@@ -56,6 +56,10 @@ requirements:
 {% if cuda_major == 11 %}
     - cudatoolkit {{ environ.get("cuda_compiler_version") }}
 {% endif %}
+{% if cuda_major == 12 %}
+    - cuda-cudart-dev
+    - cuda-driver-dev
+{% endif %}
 
 test:
   source_files:
