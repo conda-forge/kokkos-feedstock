@@ -93,7 +93,7 @@ test:
     - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
   # Test compilation with kokkos
     - cd example/build_cmake_installed
-    - cmake .
+    - cmake . -GNinja
     - cmake --build .
     - ./example
 
