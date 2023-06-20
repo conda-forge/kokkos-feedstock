@@ -33,7 +33,7 @@ cmake --install .
 sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/bin/","",g $PREFIX/bin/kokkos_launch_compiler
 rm $PREFIX/bin/*.bak
 
-sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/","",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
+sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/libcuda.so","/usr/lib64/libcuda.so",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
 sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/bin/","",g $PREFIX/lib/cmake/Kokkos/KokkosConfigCommon.cmake
 sed -i.bak -e s,'\"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_h_env_[placehold_]*\"','"\$ENV{BUILD_PREFIX}"\ "\$ENV{PREFIX}"\ "\$ENV{CONDA_PREFIX}"',g $PREFIX/lib/cmake/Kokkos/KokkosConfigCommon.cmake
 rm $PREFIX/lib/cmake/Kokkos/*.bak
