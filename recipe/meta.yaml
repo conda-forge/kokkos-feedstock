@@ -68,6 +68,9 @@ test:
     - {{ compiler('fortran') }}
     - cmake
     - ninja
+{% if cuda_major == 12 %}
+    - cuda-driver-dev
+{% endif %}
   commands:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
@@ -96,7 +99,10 @@ test:
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     - cmake . -GNinja
+{% if cuda_major == 12 %}
     - cmake --build .
+{% endif %}
+    - cmake --build .   # [cuda_compiler_version == "None"]
     - ./example --help  # [cuda_compiler_version == "None"]
 
 about:
