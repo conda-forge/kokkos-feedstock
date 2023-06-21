@@ -98,7 +98,7 @@ test:
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     - cmake . -GNinja
-    - cmake --build .   # [cuda_compiler_version == "None"]
+    - cmake --build .   # [cuda_compiler_version in ("None", "10.2", "11.0", "11.1" "11.2")]
     - ./example --help  # [cuda_compiler_version == "None"]
 
 about:
