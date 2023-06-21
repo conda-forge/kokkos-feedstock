@@ -23,26 +23,26 @@ jobs:
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
         SHORT_CONFIG: linux_64_cuda_compilernvcccuda_comp_h9d4a432baa
-      linux_aarch64_cuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
-        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_hec4875f096
-      linux_aarch64_cuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12
+      linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12:
+        CONFIG: linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h02224ef3de
-      linux_ppc64le_cuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10:
-        CONFIG: linux_ppc64le_cuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10
+        SHORT_CONFIG: linux_aarch64_cuda_compilerNonecuda_h37e02137f6
+      linux_aarch64_cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10:
+        CONFIG: linux_aarch64_cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
-        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_ha0b40410d5
-      linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12:
-        CONFIG: linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+        SHORT_CONFIG: linux_aarch64_cuda_compilernvcccuda_h9d5a70cdba
+      linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12:
+        CONFIG: linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12fortran_compiler_version12
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_hbd1c76d216
+        SHORT_CONFIG: linux_ppc64le_cuda_compilerNonecuda_h6fc922569d
+      linux_ppc64le_cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10:
+        CONFIG: linux_ppc64le_cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10fortran_compiler_version10
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+        SHORT_CONFIG: linux_ppc64le_cuda_compilernvcccuda_h7c1b71c42c
   timeoutInMinutes: 360
 
   steps:
