@@ -58,6 +58,8 @@ requirements:
     - cuda-cudart-dev
     - cuda-driver-dev
 {% endif %}
+  run:
+    - __cuda  # [cuda_compiler_version != "None"]
 
 test:
   source_files:
