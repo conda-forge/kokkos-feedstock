@@ -33,12 +33,6 @@ cmake --install .
 sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/bin/","",g $PREFIX/bin/kokkos_launch_compiler
 rm $PREFIX/bin/*.bak
 
-if [[ "$cuda_compiler_version" == "11."* ]]; then
-sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/libcuda.so","/usr/lib64/libcuda.so",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
-fi
-
-if [[ "$cuda_compiler_version" == "12."* ]]; then
-sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/libcuda.so","\$ENV{PREFIX}/lib/stubs/libcuda.so",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
 sed -i.bak '/INCLUDE(CMakeFindDependencyMacro)/a\
 \
 \IF(NOT TARGET CUDA::cudart)\
@@ -47,6 +41,13 @@ sed -i.bak '/INCLUDE(CMakeFindDependencyMacro)/a\
 \IF(NOT TARGET CUDA::cuda_driver)\
 \  MESSAGE(FATAL_ERROR, "The CUDA::cuda_driver target was not found; use find_package(CUDAToolkit REQUIRED) before find_package(Kokkos).")\
 \ENDIF()' $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
+
+if [[ "$cuda_compiler_version" == "11."* ]]; then
+sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/libcuda.so","/usr/lib64/libcuda.so",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
+fi
+
+if [[ "$cuda_compiler_version" == "12."* ]]; then
+sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/x86_64-conda-linux-gnu/sysroot/lib/libcuda.so","\$ENV{PREFIX}/lib/stubs/libcuda.so",g $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
 fi
 
 sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/bin/","",g $PREFIX/lib/cmake/Kokkos/KokkosConfigCommon.cmake
