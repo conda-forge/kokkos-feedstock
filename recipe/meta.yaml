@@ -100,6 +100,8 @@ test:
     - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
   # Test compilation with kokkos
     - cd example/build_cmake_installed
+    # Prevent error during configuration due to CUDA::cudart not found
+    - echo -e "find_package(CUDAToolkit REQUIRED)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None"]
     - cmake . -GNinja
 {% if cuda_major == 12 %}
     - cmake --build .

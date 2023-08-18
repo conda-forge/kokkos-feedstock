@@ -36,10 +36,10 @@ rm $PREFIX/bin/*.bak
 sed -i.bak '/INCLUDE(CMakeFindDependencyMacro)/a\
 \
 \IF(NOT TARGET CUDA::cudart)\
-\  MESSAGE(FATAL_ERROR, "The CUDA::cudart target was not found; use find_package(CUDAToolkit REQUIRED) before find_package(Kokkos).")\
+\  MESSAGE(SEND_ERROR "The CUDA::cudart target was not found; use find_package(CUDAToolkit REQUIRED) before find_package(Kokkos).")\
 \ENDIF()\
 \IF(NOT TARGET CUDA::cuda_driver)\
-\  MESSAGE(FATAL_ERROR, "The CUDA::cuda_driver target was not found; use find_package(CUDAToolkit REQUIRED) before find_package(Kokkos).")\
+\  MESSAGE(SEND_ERROR "The CUDA::cuda_driver target was not found; use find_package(CUDAToolkit REQUIRED) before find_package(Kokkos).")\
 \ENDIF()' $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
 
 if [[ "$cuda_compiler_version" == "11."* ]]; then
