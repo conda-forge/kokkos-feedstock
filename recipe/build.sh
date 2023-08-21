@@ -33,7 +33,7 @@ cmake --install .
 sed -i.bak -e s,"/home/conda/feedstock_root/build_artifacts/kokkos_[0-9]*/_build_env/bin/","",g $PREFIX/bin/kokkos_launch_compiler
 rm $PREFIX/bin/*.bak
 
-if [ ! -z ${cuda_compiler_version+x} ]; then
+if [[ "$cuda_compiler_version" == "1"* ]]; then
 sed -i.bak '/INCLUDE(CMakeFindDependencyMacro)/a\
 \
 \IF(NOT TARGET CUDA::cudart)\
