@@ -5,19 +5,19 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- cuda-nvcc
+- nvcc
 cuda_compiler_version:
-- '12.0'
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '12'
+- '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-ppc64le
+- quay.io/condaforge/linux-anvil-cuda:11.2
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
-- '12'
+- '10'
 target_platform:
 - linux-ppc64le
 zip_keys:
