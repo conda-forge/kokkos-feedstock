@@ -69,6 +69,10 @@ test:
     - {{ compiler('fortran') }}
     - cmake
     - ninja
+  # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+{% if cuda_major == 11 %}
+    - cudatoolkit {{ environ.get("cuda_compiler_version") }}
+{% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
     - cuda-driver-dev
