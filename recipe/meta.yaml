@@ -70,6 +70,7 @@ test:
     - cmake
     - ninja
 {% if cuda_major == 12 %}
+    - cuda-cudart-dev
     - cuda-driver-dev
 {% endif %}
   commands:
@@ -100,12 +101,9 @@ test:
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     # Prevent error during configuration due to CUDA::cudart not found
-    - echo -e "find_package(CUDAToolkit REQUIRED)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None"]
-    - cmake . -GNinja
-{% if cuda_major == 12 %}
+    - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None"]
+    - cmake -GNinja ${CMAKE_ARGS} .
     - cmake --build .
-{% endif %}
-    - cmake --build .   # [cuda_compiler_version == "None"]
     - ./example --help  # [cuda_compiler_version == "None"]
 
 about:
