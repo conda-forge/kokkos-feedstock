@@ -19,7 +19,7 @@ ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
 -S ${SRC_DIR}
 
-cmake --build . -j $CPU_COUNT --verbose
+cmake --build . -j1 --verbose
 
 # Tests will take approximately 8 minutes
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
