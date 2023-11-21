@@ -59,6 +59,7 @@ requirements:
 {% endif %}
   run:
     - __cuda  # [cuda_compiler_version != "None"]
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
 
 test:
   source_files:
