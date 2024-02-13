@@ -69,7 +69,7 @@ test:
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
     - {{ compiler('fortran') }}
-    - cmake
+    - cmake =3.27.*
     - ninja
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
     - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
