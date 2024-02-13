@@ -1,6 +1,6 @@
 {% set name = "kokkos" %}
-{% set version = "4.2.00" %}
-{% set so_version = "4.2.0" %}
+{% set version = "4.2.01" %}
+{% set so_version = "4.2.1" %}
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
 
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: ac08765848a0a6ac584a0a46cd12803f66dd2a2c2db99bb17c06ffc589bf5be8
+  sha256: cbabbabba021d00923fb357d2e1b905dda3838bd03c885a6752062fe03c67964
   patches:
     - msvc.patch  # [win]
 
@@ -50,8 +50,9 @@ requirements:
     - ninja
   host:
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+    - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
-    - cudatoolkit {{ environ.get("cuda_compiler_version") }}
+    - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
@@ -68,11 +69,12 @@ test:
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
     - {{ compiler('fortran') }}
-    - cmake
+    - cmake =3.27.*
     - ninja
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+    - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
-    - cudatoolkit {{ environ.get("cuda_compiler_version") }}
+    - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
