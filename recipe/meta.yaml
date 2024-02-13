@@ -1,6 +1,6 @@
 {% set name = "kokkos" %}
 {% set version = "4.2.01" %}
-{% set so_version = "4.2.0" %}
+{% set so_version = "4.2.1" %}
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
 
