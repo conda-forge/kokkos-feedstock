@@ -50,9 +50,9 @@ requirements:
     - ninja
   host:
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
-    - cuda-version {{ cuda_compiler_version }}.*  # [cuda_compiler_version != "None"]
+    - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
-    - cudatoolkit {{ cuda_compiler_version }}.*
+    - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
@@ -72,9 +72,9 @@ test:
     - cmake
     - ninja
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
-    - cuda-version {{ cuda_compiler_version }}.*  # [cuda_compiler_version != "None"]
+    - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
-    - cudatoolkit {{ cuda_compiler_version }}.*
+    - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
