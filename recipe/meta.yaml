@@ -11,8 +11,6 @@ package:
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
   sha256: 53cf30d3b44dade51d48efefdaee7a6cf109a091b702a443a2eda63992e5fe0d
-  patches:
-    - msvc.patch  # [win]
 
 build:
   skip: true  # [not win]
