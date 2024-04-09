@@ -53,7 +53,7 @@ requirements:
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
-    - cuda-driver-dev
+    - cuda-driver-dev  # [not win]
 {% endif %}
   run:
     - __cuda  # [cuda_compiler_version != "None"]
