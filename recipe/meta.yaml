@@ -1,5 +1,5 @@
 {% set name = "kokkos" %}
-{% set version = "4.3.00" %}
+{% set version = "4.3.01" %}
 {% set so_version = "4.3.0" %}
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 53cf30d3b44dade51d48efefdaee7a6cf109a091b702a443a2eda63992e5fe0d
+  sha256: 5998b7c732664d6b5e219ccc445cd3077f0e3968b4be480c29cd194b4f45ec70
   patches:
     - msvc.patch  # [win]
 
@@ -44,6 +44,7 @@ requirements:
   build:
     - cmake >=3.21.1,<4
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
@@ -60,7 +61,6 @@ requirements:
 {% endif %}
   run:
     - __cuda  # [cuda_compiler_version != "None"]
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
 
 test:
   source_files:
