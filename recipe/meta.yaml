@@ -4,6 +4,10 @@
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
 
+{% set cuda_present = environ.get("cuda_compiler_version", "None") %}
+{% set kokkos_proc_type = "cpu" if cuda_compiler_version == "None" else "gpu" %}  # [linux64]
+{% set kokkos_proc_type = "cpu" %}                                                # [not linux64]
+
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -16,8 +20,8 @@ source:
 
 build:
   # Upstream does not build shared libs for Windows correctly
-  skip: true  # [win]
-  number: 0
+  number: 1
+  string: "{{ kokkos_proc_type }}"
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
@@ -30,8 +34,12 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos only lets us target for one CUDA arch at a time, so target the
   # lowest arch supported by each compiler version and include PTX for later archs
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON    # [cuda_compiler_version != "None"]
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF   # [cuda_compiler_version == "None"]
+{% if cuda_present == "None" %}
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF
+{% else %}
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON
+{% endif %}
+
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
@@ -44,13 +52,17 @@ requirements:
   build:
     - cmake >=3.21.1,<4
     - {{ compiler('cxx') }}
+{% if cuda_present != "None" %}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
+{% endif %}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - ninja
   host:
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+{% if cuda_present != "None" %}
     - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
+{% endif %}
 {% if cuda_major == 11 %}
     - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
@@ -59,7 +71,9 @@ requirements:
     - cuda-driver-dev
 {% endif %}
   run:
+{% if cuda_present != "None" %}
     - __cuda  # [cuda_compiler_version != "None"]
+{% endif %}
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
 
 test:
@@ -67,12 +81,16 @@ test:
     - example/build_cmake_installed
   requires:
     - {{ compiler('cxx') }}
+{% if cuda_present != "None" %}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
+{% endif %}
     - {{ compiler('fortran') }}
     - cmake =3.27.*
     - ninja
+{% if cuda_present != "None" %}
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
     - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
+{% endif %}
 {% if cuda_major == 11 %}
     - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
@@ -131,3 +149,4 @@ extra:
     - vincentmr
     - BastianZim
     - carterbox
+    - fbordeu
