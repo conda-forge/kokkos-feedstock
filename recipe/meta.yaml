@@ -56,6 +56,7 @@ requirements:
 {% if cuda_present != "None" %}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
 {% endif %}
+    - {{ stdlib("c") }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - ninja
@@ -75,7 +76,6 @@ requirements:
 {% if cuda_present != "None" %}
     - __cuda  # [cuda_compiler_version != "None"]
 {% endif %}
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
 
 test:
   source_files:
