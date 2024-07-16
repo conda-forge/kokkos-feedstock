@@ -18,11 +18,12 @@ source:
 
 build:
   # Upstream does not build shared libs for Windows correctly
-{% if cuda_present != "None" %}
-  skip: true  # [win]
-{% endif %}
+  #{% if cuda_present != "None" %}
+  #  skip: true  # [win]
+  #{% endif %}
   number: 1
-  string: "{{ kokkos_proc_type }}"
+  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"   # [cuda_compiler_version != "None"]
+  string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"                      # [cuda_compiler_version == "None"]
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
