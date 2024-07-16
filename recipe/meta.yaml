@@ -4,10 +4,6 @@
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
 
-{% set cuda_present = environ.get("cuda_compiler_version", "None") %}
-{% set kokkos_proc_type = "cpu" if cuda_compiler_version == "None" else "gpu" %}  # [linux64]
-{% set kokkos_proc_type = "cpu" %}                                                # [not linux64]
-
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -17,10 +13,6 @@ source:
   sha256: 53cf30d3b44dade51d48efefdaee7a6cf109a091b702a443a2eda63992e5fe0d
 
 build:
-  # Upstream does not build shared libs for Windows correctly
-  #{% if cuda_present != "None" %}
-  #  skip: true  # [win]
-  #{% endif %}
   number: 1
   string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"   # [cuda_compiler_version != "None"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"                      # [cuda_compiler_version == "None"]
@@ -36,36 +28,30 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos only lets us target for one CUDA arch at a time, so target the
   # lowest arch supported by each compiler version and include PTX for later archs
-{% if cuda_present == "None" %}
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF
-{% else %}
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON
-{% endif %}
 
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
 {% if cuda_major == 12 %}
-    - Kokkos_OPT_ARGS=-DKokkos_ARCH_MAXWELL50=ON
+    - Kokkos_OPT_ARGS=-DKokkos_ARCH_MAXWELL50=ON  
 {% endif %}
     - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF
+    
 
 requirements:
   build:
     - cmake >=3.21.1,<4
     - {{ compiler('cxx') }}
-{% if cuda_present != "None" %}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
-{% endif %}
     - {{ stdlib("c") }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - ninja
   host:
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
-{% if cuda_present != "None" %}
     - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
-{% endif %}
 {% if cuda_major == 11 %}
     - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
@@ -74,25 +60,19 @@ requirements:
     - cuda-driver-dev
 {% endif %}
   run:
-{% if cuda_present != "None" %}
     - __cuda  # [cuda_compiler_version != "None"]
-{% endif %}
 
 test:
   source_files:
     - example/build_cmake_installed
   requires:
     - {{ compiler('cxx') }}
-{% if cuda_present != "None" %}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
-{% endif %}
     - {{ compiler('fortran') }}
     - cmake =3.27.*
     - ninja
-{% if cuda_present != "None" %}
   # Will get nvcc linker warnings if the cudatoolkit version doesn't match
     - cuda-version {{ environ.get("cuda_compiler_version") }}.*  # [cuda_compiler_version != "None"]
-{% endif %}
 {% if cuda_major == 11 %}
     - cudatoolkit {{ environ.get("cuda_compiler_version") }}.*
 {% endif %}
@@ -123,16 +103,12 @@ test:
     - test -f $PREFIX/bin/kokkos_launch_compiler  # [unix]
     - if not exist %LIBRARY_BIN%\\hpcbind exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler exit 1  # [win]
-{% if cuda_present != "None" %}
-    - test -f $PREFIX/bin/nvcc_wrapper  # [unix]
-    - if not exist %LIBRARY_BIN%\\nvcc_wrapper exit 1  # [win]
-{% endif %}
+    - test -f $PREFIX/bin/nvcc_wrapper  # [cuda_compiler_version != "None" and unix]
+    - if not exist %LIBRARY_BIN%\\nvcc_wrapper exit 1  # [cuda_compiler_version != "None" and win]
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     # Prevent error during configuration due to CUDA::cudart not found
-{% if (cuda_present != "None") %}
     - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None" and unix]
-{% endif %}
     # for the moment the compilation on windows block the runner
     - cmake -GNinja ${CMAKE_ARGS} .  # [not win]
     - cmake --build .   # [not win]
