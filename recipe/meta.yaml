@@ -28,8 +28,8 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos only lets us target for one CUDA arch at a time, so target the
   # lowest arch supported by each compiler version and include PTX for later archs
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
@@ -91,7 +91,7 @@ test:
     - test -f $PREFIX/lib/libkokkoscontainers.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkoscore.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
-  #windows
+  # windows
     - if not exist %LIBRARY_LIB%\\kokkoscontainers.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\kokkoscore.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\kokkossimd.lib exit 1  # [win]
@@ -115,10 +115,10 @@ test:
     # Prevent error during configuration due to CUDA::cudart not found
     - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None" and unix]
     # for the moment the compilation on windows block the runner
-    - cmake -GNinja ${CMAKE_ARGS} .  # [not win]
-    - cmake --build .   # [not win]
-    - ./example --help  # [cuda_compiler_version == "None" and linux]
-#    - example --help  # [cuda_compiler_version == "None" and win]
+    - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release  .  # [cuda_compiler_version == "None" and (linux or win) ]
+    - cmake --build .  # [cuda_compiler_version == "None" and (linux or win)]
+    - ./example 1000 --help  # [cuda_compiler_version == "None" and linux]
+    - example 1000 --help  # [cuda_compiler_version == "None" and win]
 
 about:
   home: https://kokkos.org/
