@@ -28,17 +28,15 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos only lets us target for one CUDA arch at a time, so target the
   # lowest arch supported by each compiler version and include PTX for later archs
-
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
 {% if cuda_major == 12 %}
-    - Kokkos_OPT_ARGS=-DKokkos_ARCH_MAXWELL50=ON  
+    - Kokkos_OPT_ARGS=-DKokkos_ARCH_MAXWELL50=ON
 {% endif %}
     - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF
-    
 
 requirements:
   build:
@@ -84,15 +82,22 @@ test:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
     - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake exit 1  # [win]
-  # Testing explicity for all shared libs, but not links
+  # Testing explicitly for all shared libs, but not links
+  # linux
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkossimd.so.{{ so_version }}  # [linux]
+  # osX
     - test -f $PREFIX/lib/libkokkoscontainers.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkoscore.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
+  #windows
     - if not exist %LIBRARY_LIB%\\kokkoscontainers.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\kokkoscore.lib exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\kokkossimd.lib exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkoscontainers.dll exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkoscore.dll exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkossimd.dll exit 1  # [win]
   # There are lots more headers; only test for a few.
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
