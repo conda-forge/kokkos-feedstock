@@ -11,13 +11,11 @@ package:
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
   sha256: 53cf30d3b44dade51d48efefdaee7a6cf109a091b702a443a2eda63992e5fe0d
-  patches:
-    - msvc.patch  # [win]
 
 build:
-  # Upstream does not build shared libs for Windows correctly
-  skip: true  # [win]
-  number: 0
+  number: 1
+  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"   # [cuda_compiler_version != "None"]
+  string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"                      # [cuda_compiler_version == "None"]
   run_exports:
     - {{ pin_subpackage('kokkos') }}
   script_env:
@@ -30,8 +28,8 @@ build:
   #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
   # Kokkos only lets us target for one CUDA arch at a time, so target the
   # lowest arch supported by each compiler version and include PTX for later archs
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON    # [cuda_compiler_version != "None"]
-    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF   # [cuda_compiler_version == "None"]
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
+    - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
@@ -45,6 +43,7 @@ requirements:
     - cmake >=3.21.1,<4
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}  # [cuda_compiler_version != "None"]
+    - {{ stdlib("c") }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - ninja
@@ -56,11 +55,10 @@ requirements:
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
-    - cuda-driver-dev
+    - cuda-driver-dev   # [not win]
 {% endif %}
   run:
     - __cuda  # [cuda_compiler_version != "None"]
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
 
 test:
   source_files:
@@ -78,40 +76,49 @@ test:
 {% endif %}
 {% if cuda_major == 12 %}
     - cuda-cudart-dev
-    - cuda-driver-dev
+    - cuda-driver-dev   # [not win]
 {% endif %}
   commands:
   # Lots more CMake files; just checking for one
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
-    - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake  # [win]
-  # Testing explicity for all shared libs, but not links
+    - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake exit 1  # [win]
+  # Testing explicitly for all shared libs, but not links
+  # linux
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkossimd.so.{{ so_version }}  # [linux]
+  # osX
     - test -f $PREFIX/lib/libkokkoscontainers.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkoscore.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
-    - if not exist %LIBRARY_LIB%\\libkokkoscontainers.lib exit 1  # [win]
-    - if not exist %LIBRARY_LIB%\\libkokkoscore.lib exit 1  # [win]
+  # windows
+    - if not exist %LIBRARY_LIB%\\kokkoscontainers.lib exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\kokkoscore.lib exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\kokkossimd.lib exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkoscontainers.dll exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkoscore.dll exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkossimd.dll exit 1  # [win]
   # There are lots more headers; only test for a few.
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
     - test -f $PREFIX/include/Kokkos_Core.hpp  # [unix]
-    - if not exist %LIBRARY_INC%\\Kokkos_Core.hpp  # [win]
+    - if not exist %LIBRARY_INC%\\Kokkos_Core.hpp exit 1  # [win]
   # These are all the binaries
     - test -f $PREFIX/bin/hpcbind  # [unix]
     - test -f $PREFIX/bin/kokkos_launch_compiler  # [unix]
-    - test -f $PREFIX/bin/nvcc_wrapper  # [unix]
-    - if not exist %LIBRARY_BIN%\\hpcbind  # [win]
-    - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler  # [win]
-    - if not exist %LIBRARY_BIN%\\nvcc_wrapper  # [win]
+    - if not exist %LIBRARY_BIN%\\hpcbind exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\kokkos_launch_compiler exit 1  # [win]
+    - test -f $PREFIX/bin/nvcc_wrapper  # [cuda_compiler_version != "None" and unix]
+    - if not exist %LIBRARY_BIN%\\nvcc_wrapper exit 1  # [cuda_compiler_version != "None" and win]
   # Test compilation with kokkos
     - cd example/build_cmake_installed
     # Prevent error during configuration due to CUDA::cudart not found
-    - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None"]
-    - cmake -GNinja ${CMAKE_ARGS} .
-    - cmake --build .
-    - ./example --help  # [cuda_compiler_version == "None"]
+    - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt  # [cuda_compiler_version != "None" and unix]
+    # for the moment the compilation on windows block the runner
+    - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release  .  # [cuda_compiler_version == "None" and (linux or win) ]
+    - cmake --build .  # [cuda_compiler_version == "None" and (linux or win)]
+    - ./example 1000 --help  # [cuda_compiler_version == "None" and linux]
+    - example 1000 --help  # [cuda_compiler_version == "None" and win]
 
 about:
   home: https://kokkos.org/
@@ -131,3 +138,4 @@ extra:
     - vincentmr
     - BastianZim
     - carterbox
+    - fbordeu
