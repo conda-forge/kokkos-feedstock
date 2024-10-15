@@ -13,7 +13,7 @@ source:
   sha256: 3f7096d17eaaa4004c7497ac082bf1ae3ff47b5104149e54af021a89414c3682
 
 build:
-  number: 0
+  number: 1
   string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
   run_exports:
