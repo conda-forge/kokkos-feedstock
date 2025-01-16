@@ -8,18 +8,30 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_cuda_compiler_version11.8:
-        CONFIG: win_64_cuda_compiler_version11.8
+      win_64_cuda_compiler_version11.8relocatableOFF:
+        CONFIG: win_64_cuda_compiler_version11.8relocatableOFF
         UPLOAD_PACKAGES: 'True'
-        SHORT_CONFIG: win_64_cuda_compiler_version11.8
-      win_64_cuda_compiler_version12.6:
-        CONFIG: win_64_cuda_compiler_version12.6
+        SHORT_CONFIG: win_64_cuda_compiler_version11.8relocatableOFF
+      win_64_cuda_compiler_version11.8relocatableON:
+        CONFIG: win_64_cuda_compiler_version11.8relocatableON
         UPLOAD_PACKAGES: 'True'
-        SHORT_CONFIG: win_64_cuda_compiler_version12.6
-      win_64_cuda_compiler_versionNone:
-        CONFIG: win_64_cuda_compiler_versionNone
+        SHORT_CONFIG: win_64_cuda_compiler_version11.8relocatableON
+      win_64_cuda_compiler_version12.6relocatableOFF:
+        CONFIG: win_64_cuda_compiler_version12.6relocatableOFF
         UPLOAD_PACKAGES: 'True'
-        SHORT_CONFIG: win_64_cuda_compiler_versionNone
+        SHORT_CONFIG: win_64_cuda_compiler_version12.6relocatableOFF
+      win_64_cuda_compiler_version12.6relocatableON:
+        CONFIG: win_64_cuda_compiler_version12.6relocatableON
+        UPLOAD_PACKAGES: 'True'
+        SHORT_CONFIG: win_64_cuda_compiler_version12.6relocatableON
+      win_64_cuda_compiler_versionNonerelocatableOFF:
+        CONFIG: win_64_cuda_compiler_versionNonerelocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        SHORT_CONFIG: win_64_cuda_compiler_versionNonerelocatableOFF
+      win_64_cuda_compiler_versionNonerelocatableON:
+        CONFIG: win_64_cuda_compiler_versionNonerelocatableON
+        UPLOAD_PACKAGES: 'True'
+        SHORT_CONFIG: win_64_cuda_compiler_versionNonerelocatableON
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\

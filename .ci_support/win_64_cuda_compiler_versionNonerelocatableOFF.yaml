@@ -5,15 +5,17 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- cuda-nvcc
+- None
 cuda_compiler_version:
-- '12.6'
+- None
 cxx_compiler:
 - vs2019
 fortran_compiler:
 - flang
 fortran_compiler_version:
 - '19'
+relocatable:
+- 'OFF'
 target_platform:
 - win-64
 zip_keys:

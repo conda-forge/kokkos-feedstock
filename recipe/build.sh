@@ -17,6 +17,7 @@ ${CMAKE_ARGS} \
 ${Kokkos_OPT_ARGS} \
 ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
+${Kokkos_RELOC_ARGS} \
 -S ${SRC_DIR}
 
 cmake --build . -j1 --verbose

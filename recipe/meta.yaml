@@ -14,7 +14,9 @@ source:
 
 build:
   number: 1
-  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None"]
+  skip: true  # [relocatable == "ON" and cuda_compiler_version == "None"]
+  string: "rdccuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None" and relocatable == "ON"]
+  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None" and relocatable == "OFF"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
   run_exports:
     - {{ pin_subpackage('kokkos') }}
@@ -30,6 +32,7 @@ build:
   # lowest arch supported by each compiler version and include PTX for later archs
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
+    - Kokkos_RELOC_ARGS=-DKokkos_ENABLE_CUDA_RELOCATABLE_DEVICE_CODE={{ relocatable }}
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
