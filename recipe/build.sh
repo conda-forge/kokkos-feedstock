@@ -27,7 +27,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}
 ctest --output-on-failure
 fi
 
-cmake --install .
+cmake --install . --strip
 
 # Remove build-prefix paths
 
