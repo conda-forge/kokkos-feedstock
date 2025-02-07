@@ -18,7 +18,7 @@ build:
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
   run_exports:
     - {{ pin_subpackage('kokkos') }}
-  skip: true  # [win and cuda_compiler_version == "11.8"]
+  skip: true  # [win]
   script_env:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
   # for each platform for desktop chips released since 2012 (10 years)
