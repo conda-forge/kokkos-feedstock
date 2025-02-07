@@ -30,6 +30,10 @@ build:
   # lowest arch supported by each compiler version and include PTX for later archs
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
+{% if cuda_major == 0 %}
+  # Use CXX_STANDARD 20 to avoid syntax errors - @carterbox Jan 2025
+    - Kokkos_OPT_ARGS=-DCMAKE_CXX_STANDARD=20
+{% endif %}
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
