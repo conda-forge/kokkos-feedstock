@@ -12,7 +12,8 @@ if errorlevel 1 exit 1
 
 cmake ^
 -GNinja ^
--DCMAKE_CXX_STANDARD=20 ^
+-DCMAKE_CXX_FLAGS="/std:c++17" ^
+-DCMAKE_CXX_STANDARD=17 ^
 -DCMAKE_BUILD_TYPE=Release ^
 -DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
 -DCMAKE_PREFIX_PATH:PATH="%LIBRARY_PREFIX%" ^
@@ -30,7 +31,7 @@ cmake ^
 -S %SRC_DIR%
 if errorlevel 1 exit 1
 
-cmake --build . -j %CPU_COUNT%
+cmake --build . -j %CPU_COUNT% -v
 if errorlevel 1 exit 1
 
 :: Tests will take approximately 8 minutes
