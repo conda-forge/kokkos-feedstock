@@ -8,8 +8,11 @@ if errorlevel 1 exit 1
 :: OpenMP>=3.0, but MSVC only implements OpenMP=2.0 as of 09/2022
 :: https://github.com/kokkos/kokkos/issues/5482
 
+:: Use CXX_STANDARD 20 to avoid syntax errors - @carterbox Jan 2025
+
 cmake ^
 -GNinja ^
+-DCMAKE_CXX_STANDARD=20 ^
 -DCMAKE_BUILD_TYPE=Release ^
 -DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
 -DCMAKE_PREFIX_PATH:PATH="%LIBRARY_PREFIX%" ^
