@@ -5,7 +5,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/kokkos-feedstoc
 
 Home: https://kokkos.org/
 
-Package license: BSD-3-Clause
+Package license: Apache-2.0
 
 Summary: Kokkos C++ Performance Portability Programming EcoSystem: The Programming Model - Parallel Execution and Memory Abstraction
 
@@ -21,14 +21,7 @@ Current build status
 ====================
 
 
-<table><tr>
-    <td>Travis</td>
-    <td>
-      <a href="https://app.travis-ci.com/conda-forge/kokkos-feedstock">
-        <img alt="linux" src="https://img.shields.io/travis/com/conda-forge/kokkos-feedstock/main.svg?label=Linux">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
@@ -42,129 +35,129 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
+              <td>linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
+              <td>linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
+              <td>linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON</td>
+              <td>linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
+              <td>linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
+              <td>linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
+              <td>linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
+              <td>linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
+              <td>linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON</td>
+              <td>linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
+              <td>linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
+              <td>linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
+              <td>linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
+              <td>linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF</td>
+              <td>linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON</td>
+              <td>linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -182,45 +175,45 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilerNonecuda_compiler_versionNonerelocatableOFF</td>
+              <td>win_64_cuda_compiler_version11.8relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilerNonecuda_compiler_versionNonerelocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version11.8relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilerNonecuda_compiler_versionNonerelocatableON</td>
+              <td>win_64_cuda_compiler_version11.8relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilerNonecuda_compiler_versionNonerelocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version11.8relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilercuda-nvcccuda_compiler_version12.6relocatableOFF</td>
+              <td>win_64_cuda_compiler_version12.6relocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilercuda-nvcccuda_compiler_version12.6relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version12.6relocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilercuda-nvcccuda_compiler_version12.6relocatableON</td>
+              <td>win_64_cuda_compiler_version12.6relocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilercuda-nvcccuda_compiler_version12.6relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version12.6relocatableON" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilernvcccuda_compiler_version11.8relocatableOFF</td>
+              <td>win_64_cuda_compiler_versionNonerelocatableOFF</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilernvcccuda_compiler_version11.8relocatableOFF" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_versionNonerelocatableOFF" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilernvcccuda_compiler_version11.8relocatableON</td>
+              <td>win_64_cuda_compiler_versionNonerelocatableON</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16882&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilernvcccuda_compiler_version11.8relocatableON" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/kokkos-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_versionNonerelocatableON" alt="variant">
                 </a>
               </td>
             </tr>
@@ -237,6 +230,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-kokkos-green.svg)](https://anaconda.org/conda-forge/kokkos) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/kokkos.svg)](https://anaconda.org/conda-forge/kokkos) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/kokkos.svg)](https://anaconda.org/conda-forge/kokkos) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/kokkos.svg)](https://anaconda.org/conda-forge/kokkos) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-kokkos--static-green.svg)](https://anaconda.org/conda-forge/kokkos-static) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/kokkos-static.svg)](https://anaconda.org/conda-forge/kokkos-static) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/kokkos-static.svg)](https://anaconda.org/conda-forge/kokkos-static) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/kokkos-static.svg)](https://anaconda.org/conda-forge/kokkos-static) |
 
 Installing kokkos
 =================
@@ -248,16 +242,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `kokkos` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `kokkos, kokkos-static` can be installed with `conda`:
 
 ```
-conda install kokkos
+conda install kokkos kokkos-static
 ```
 
 or with `mamba`:
 
 ```
-mamba install kokkos
+mamba install kokkos kokkos-static
 ```
 
 It is possible to list all of the versions of `kokkos` available on your platform with `conda`:

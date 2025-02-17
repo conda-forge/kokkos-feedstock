@@ -8,36 +8,96 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF:
-        CONFIG: linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
-        SHORT_CONFIG: linux_64_cuda_compilerNonecuda_comp_he236f25304
-      linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON:
-        CONFIG: linux_64_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
-        SHORT_CONFIG: linux_64_cuda_compilerNonecuda_comp_h80b9d2fcfc
-      linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF:
-        CONFIG: linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
-        SHORT_CONFIG: linux_64_cuda_compilercuda-nvcccuda_h89685638ae
-      linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON:
-        CONFIG: linux_64_cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
-        SHORT_CONFIG: linux_64_cuda_compilercuda-nvcccuda_h1a677cff76
-      linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF:
-        CONFIG: linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF
+      linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF:
+        CONFIG: linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
-        SHORT_CONFIG: linux_64_cuda_compilernvcccuda_comp_h929ef82c8c
-      linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON:
-        CONFIG: linux_64_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON
+        SHORT_CONFIG: linux_64_cuda_compiler_version11.8c_h28d6824998
+      linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON:
+        CONFIG: linux_64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
-        SHORT_CONFIG: linux_64_cuda_compilernvcccuda_comp_ha22024f8c1
+        SHORT_CONFIG: linux_64_cuda_compiler_version11.8c_h66d8ca472f
+      linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF:
+        CONFIG: linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+        SHORT_CONFIG: linux_64_cuda_compiler_version12.6c_h164a025abd
+      linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON:
+        CONFIG: linux_64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+        SHORT_CONFIG: linux_64_cuda_compiler_version12.6c_hf7d40bec53
+      linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF:
+        CONFIG: linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+        SHORT_CONFIG: linux_64_cuda_compiler_versionNonec_h863cf48644
+      linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON:
+        CONFIG: linux_64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+        SHORT_CONFIG: linux_64_cuda_compiler_versionNonec_h9c8dcf3e1b
+      linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF:
+        CONFIG: linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h32afc2a526
+      linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON:
+        CONFIG: linux_aarch64_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h3349548080
+      linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF:
+        CONFIG: linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h2ebb6dda8c
+      linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON:
+        CONFIG: linux_aarch64_cuda_compiler_version12.6cxx_compiler_version13fortran_compiler_version13relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h541f03e3fe
+      linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF:
+        CONFIG: linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h3de9eb541b
+      linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON:
+        CONFIG: linux_aarch64_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+        SHORT_CONFIG: linux_aarch64_cuda_compiler_version_h3569236743
+      linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF:
+        CONFIG: linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda11.8:ubi8
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_hfbca5a8afb
+      linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON:
+        CONFIG: linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda11.8:ubi8
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h5ca52fbb95
+      linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF:
+        CONFIG: linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h0efdf85d15
+      linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON:
+        CONFIG: linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h8c02592d18
+      linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF:
+        CONFIG: linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableOFF
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h8561b39649
+      linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON:
+        CONFIG: linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13relocatableON
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h977afc62f3
   timeoutInMinutes: 360
   variables: {}
 

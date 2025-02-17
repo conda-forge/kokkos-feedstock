@@ -5,7 +5,8 @@
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name|lower }}         # [relocatable == "OFF"]
+  name: {{ name|lower }}-static  # [relocatable == "ON"]
   version: {{ version }}
 
 source:
@@ -13,16 +14,15 @@ source:
   sha256: e0008c89d7f03ebbe31eb3c89d40fe529b4e4072b40331ae6b9d6599f02dff44
 
 build:
-  number: 100  # [relocatable == "OFF"]
-  number: 0  # [relocatable == "ON"]
+  number: 0
   skip: true  # [relocatable == "ON" and cuda_compiler_version == "None"]
-  string: "rdccuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None" and relocatable == "ON"]
-  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None" and relocatable == "OFF"]
+  string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
   run_exports:
-    - {{ pin_subpackage('kokkos') }}
-    - kokkos * rdccuda*  # [cuda_compiler_version != "None" and relocatable == "ON"]
-    - kokkos * cuda*  # [cuda_compiler_version != "None" and relocatable == "OFF"]
+    weak:
+      - {{ pin_subpackage('kokkos') }}  # [relocatable == "OFF"]
+    weak_constrained:
+      - {{ pin_subpackage('kokkos') }}  # [relocatable == "ON"]
   script_env:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
   # for each platform for desktop chips released since 2012 (10 years)
@@ -35,7 +35,8 @@ build:
   # lowest arch supported by each compiler version and include PTX for later archs
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
-    - Kokkos_RELOC_ARGS=-DKokkos_ENABLE_CUDA_RELOCATABLE_DEVICE_CODE={{ relocatable }}
+    - Kokkos_RELOC_ARGS=-DKokkos_ENABLE_CUDA_RELOCATABLE_DEVICE_CODE={{ relocatable }} -DBUILD_SHARED_LIBS=OFF  # [relocatable == "ON"]
+    - Kokkos_RELOC_ARGS=-DKokkos_ENABLE_CUDA_RELOCATABLE_DEVICE_CODE={{ relocatable }} -DBUILD_SHARED_LIBS=ON  # [relocatable == "OFF"]
 {% if cuda_major == 11 %}
     - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
 {% endif %}
@@ -63,8 +64,6 @@ requirements:
     - cuda-cudart-dev
     - cuda-driver-dev   # [not win]
 {% endif %}
-  run:
-    - __cuda  # [cuda_compiler_version != "None"]
 
 test:
   source_files:
@@ -89,6 +88,7 @@ test:
     - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake  # [unix]
     - if not exist %LIBRARY_LIB%\\cmake\\Kokkos\\KokkosConfig.cmake exit 1  # [win]
   # Testing explicitly for all shared libs, but not links
+{% if relocatable == "OFF" %}
   # linux
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ so_version }}  # [linux]
@@ -104,6 +104,7 @@ test:
     - if not exist %LIBRARY_BIN%\\kokkoscontainers.dll exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\kokkoscore.dll exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\kokkossimd.dll exit 1  # [win]
+{% endif %}
   # There are lots more headers; only test for a few.
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
