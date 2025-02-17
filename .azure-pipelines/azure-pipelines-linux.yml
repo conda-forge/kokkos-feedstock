@@ -38,21 +38,21 @@ jobs:
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
         SHORT_CONFIG: linux_aarch64_cuda_compilernvcccuda_hf5a1ae4a2b
-      linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13:
-        CONFIG: linux_ppc64le_cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
-        SHORT_CONFIG: linux_ppc64le_cuda_compilerNonecuda_h58b9bf5424
-      linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12:
-        CONFIG: linux_ppc64le_cuda_compilercuda-nvcccuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
-        SHORT_CONFIG: linux_ppc64le_cuda_compilercuda-nvc_head071d1b8
-      linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11:
-        CONFIG: linux_ppc64le_cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11
+      linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11:
+        CONFIG: linux_ppc64le_cuda_compiler_version11.8cxx_compiler_version11fortran_compiler_version11
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda11.8:ubi8
-        SHORT_CONFIG: linux_ppc64le_cuda_compilernvcccuda_h63e8f5b31b
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h500aa360c0
+      linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12:
+        CONFIG: linux_ppc64le_cuda_compiler_version12.4cxx_compiler_version12fortran_compiler_version12
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h945b87e79f
+      linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13:
+        CONFIG: linux_ppc64le_cuda_compiler_versionNonecxx_compiler_version13fortran_compiler_version13
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le:alma9
+        SHORT_CONFIG: linux_ppc64le_cuda_compiler_version_h803431e1b3
   timeoutInMinutes: 360
   variables: {}
 
