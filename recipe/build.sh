@@ -8,7 +8,6 @@ cmake \
 -DCMAKE_BUILD_TYPE=Release \
 -DCMAKE_INSTALL_PREFIX=$PREFIX \
 -DCMAKE_INSTALL_LIBDIR=lib \
--DBUILD_SHARED_LIBS=ON \
 ${CMAKE_ARGS} \
 -DKokkos_ENABLE_OPENMP=ON \
 -DKokkos_ENABLE_EXAMPLES=OFF \
@@ -17,6 +16,7 @@ ${CMAKE_ARGS} \
 ${Kokkos_OPT_ARGS} \
 ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
+${Kokkos_RELOC_ARGS} \
 -S ${SRC_DIR}
 
 cmake --build . -j1 --verbose
@@ -26,7 +26,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}
 ctest --output-on-failure
 fi
 
-cmake --install .
+cmake --install . --strip
 
 # Remove build-prefix paths
 

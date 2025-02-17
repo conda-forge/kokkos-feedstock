@@ -23,6 +23,7 @@ cmake ^
 %Kokkos_OPT_ARGS% ^
 %Kokkos_CUDA_ARGS% ^
 %Kokkos_TEST_ARGS% ^
+%Kokkos_RELOC_ARGS% ^
 -DKokkos_ENABLE_COMPILE_AS_CMAKE_LANGUAGE=ON ^
 -S %SRC_DIR%
 if errorlevel 1 exit 1
