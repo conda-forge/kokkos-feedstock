@@ -13,7 +13,7 @@ source:
   sha256: 348b2d860046fc3ddef5ca3a128317be1a6f3fa35196f268338a180fcae52264
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
   string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
@@ -32,10 +32,10 @@ build:
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=ON   # [cuda_compiler_version != "None"]
     - Kokkos_CUDA_ARGS=-DKokkos_ENABLE_CUDA=OFF  # [cuda_compiler_version == "None"]
 {% if cuda_major == 11 %}
-    - Kokkos_OPT_ARGS=-DKokkos_ARCH_KEPLER35=ON
+    - Kokkos_OPT_ARGS=-DKokkos_ARCH_PASCAL60=ON
 {% endif %}
 {% if cuda_major == 12 %}
-    - Kokkos_OPT_ARGS=-DKokkos_ARCH_MAXWELL50=ON
+    - Kokkos_OPT_ARGS=-DKokkos_ARCH_VOLTA70=ON
 {% endif %}
     - Kokkos_TEST_ARGS=-DKokkos_ENABLE_TESTS=OFF
 
