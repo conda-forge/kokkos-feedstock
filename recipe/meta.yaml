@@ -1,5 +1,5 @@
 {% set name = "kokkos" %}
-{% set version = "4.7.01" %}
+{% set version = "5.0.0" %}
 {% set so_version = version.split(".") | map("int") | join(".") %}
 
 {% set cuda_major = environ.get("cuda_compiler_version", "0.0").split(".")[0]|int %}
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/{{ version }}.tar.gz
-  sha256: cebf6daeb99c95e3d4116ea0d97c94b6a521c0cff1f5e613f127f6beea960ac7
+  sha256: b028b797ba8ef3b439ddccf4aa3d651f2fa225cc2195bf1c1aaf096831b611c7
 
 build:
   number: 0
