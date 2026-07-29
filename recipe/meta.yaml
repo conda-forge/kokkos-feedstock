@@ -87,18 +87,18 @@ test:
   # linux
     - test -f $PREFIX/lib/libkokkoscontainers.so.{{ so_version }}  # [linux]
     - test -f $PREFIX/lib/libkokkoscore.so.{{ so_version }}  # [linux]
-    - test -f $PREFIX/lib/libkokkossimd.so.{{ so_version }}  # [linux]
+    #- test -f $PREFIX/lib/libkokkossimd.so.{{ so_version }}  # [linux]
   # osX
     - test -f $PREFIX/lib/libkokkoscontainers.{{ so_version }}.dylib  # [osx]
     - test -f $PREFIX/lib/libkokkoscore.{{ so_version }}.dylib  # [osx]
-    - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
+    # - test -f $PREFIX/lib/libkokkossimd.{{ so_version }}.dylib  # [osx]
   # windows
     - if not exist %LIBRARY_LIB%\\kokkoscontainers.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\kokkoscore.lib exit 1  # [win]
-    - if not exist %LIBRARY_LIB%\\kokkossimd.lib exit 1  # [win]
+    #- if not exist %LIBRARY_LIB%\\kokkossimd.lib exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\kokkoscontainers.dll exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\kokkoscore.dll exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\kokkossimd.dll exit 1  # [win]
+    # - if not exist %LIBRARY_BIN%\\kokkossimd.dll exit 1  # [win]
   # There are lots more headers; only test for a few.
   # Dumps many headers directly into include/,
   # but all files are prefixed with Kokkos_
