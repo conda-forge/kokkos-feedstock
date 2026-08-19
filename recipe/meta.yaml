@@ -13,7 +13,7 @@ source:
   sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and cuda_compiler_version != "None"]
   string: "cuda{{ cuda_major }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version != "None"]
   string: "h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}"  # [cuda_compiler_version == "None"]
