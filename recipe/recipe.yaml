@@ -47,6 +47,7 @@ requirements:
       then:
         - sed
   host:
+    - libhwloc
     - if: osx
       then: llvm-openmp
     - if: linux

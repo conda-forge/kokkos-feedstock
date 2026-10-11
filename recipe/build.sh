@@ -14,6 +14,7 @@ ${CMAKE_ARGS} \
 -DKokkos_ENABLE_EXAMPLES=OFF \
 -DKokkos_ENABLE_SERIAL=ON \
 -DKokkos_ENABLE_LIBDL:BOOL=OFF \
+-DKokkos_ENABLE_HWLOC:BOOL=ON \
 ${Kokkos_OPT_ARGS} \
 ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
