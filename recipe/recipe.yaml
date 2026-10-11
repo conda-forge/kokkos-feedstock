@@ -83,6 +83,7 @@ tests:
                 - cuda-version ${{ cuda_compiler_version }}.*
                 - cuda-cudart-dev
                 - cuda-driver-dev
+                - libcublas-dev
         script:
           # Lots more CMake files; just checking for one
           - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
@@ -113,7 +114,8 @@ tests:
               - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt
               - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release .
               - cmake --build .
-              - ./example 1000 --help
+              # Running example requires loading the CUDA driver
+              # - ./example 1000 --help
           - if: cuda_compiler_version == "None" and linux
             then:
               # Test compilation with kokkos
