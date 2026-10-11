@@ -1,0 +1,177 @@
+schema_version: 1
+
+context:
+  name: kokkos
+  version: "5.2.1"
+  build_number: 1
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/kokkos/kokkos/archive/refs/tags/${{ version }}.tar.gz
+  sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
+
+build:
+  number: ${{ build_number }}
+  skip: win and cuda_compiler_version != "None"
+  string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring if cuda_compiler_version != "None" else "" }}h${{ hash }}_${{ build_number }}
+  script:
+  # Search acronyms on https://en.wikichip.org/ to enable optimizations
+  # for each platform for desktop chips released since 2012 (10 years)
+  # Build options here: https://github.com/kokkos/kokkos/blob/master/BUILD.md
+  # FIXME: Cannot optimize for multiple CPU archs simultaneously. For now, don't enable any optimizations.
+  #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_AMDAVX=ON -DKokkos_ARCH_BDW=ON -DKokkos_ARCH_HSW=ON -DKokkos_ARCH_SNB=ON -DKokkos_ARCH_ZEN=ON -DKokkos_ARCH_ZEN2=ON -DKokkos_ARCH_ZEN3=ON  # [x86_64 and not osx]
+  #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_POWER8=ON -DKokkos_ARCH_POWER9=ON  # [ppc64le]
+  #  - Kokkos_OPT_ARGS=-DKokkos_ARCH_ARMV80=ON -DKokkos_ARCH_ARMV81=ON  # [aarch64]
+  # Kokkos only lets us target for one CUDA arch at a time, so target the
+  # lowest arch supported by each compiler version and include PTX for later archs
+    env:
+      Kokkos_CUDA_ARGS: ${{ "-DKokkos_ENABLE_CUDA=ON" if cuda_compiler_version != "None" else "-DKokkos_ENABLE_CUDA=OFF" }}
+      Kokkos_OPT_ARGS: -DKokkos_ARCH_AMPERE80=ON
+      Kokkos_TEST_ARGS: -DKokkos_ENABLE_TESTS=OFF
+
+requirements:
+  run_exports:
+    - ${{ pin_subpackage("kokkos") }}
+  build:
+    - cmake >=3.21.1,<4
+    - ${{ compiler('cxx') }}
+    - if: cuda_compiler_version != "None"
+      then:
+        - ${{ compiler('cuda') }}
+    - ${{ stdlib("c") }}
+    - ninja
+  host:
+    - if: osx
+      then: llvm-openmp
+    - if: linux
+      then: libgomp
+    - if: cuda_compiler_version != "None"
+      then:
+        # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+        - cuda-version ${{ cuda_compiler_version }}.*
+        - cuda-cudart-dev
+        - if: not win
+          then: cuda-driver-dev
+  run:
+    - if: cuda_compiler_version != "None"
+      then: __cuda
+
+tests:
+  - if: unix
+    then:
+      - files:
+          source:
+            - example/build_cmake_installed
+        requirements:
+          run:
+            - ${{ compiler('cxx') }}
+            - if: cuda_compiler_version != "None"
+              then:
+                - ${{ compiler('cuda') }}
+            - ${{ compiler('fortran') }}
+            - cmake 3.27.*
+            - ninja
+            # Will get nvcc linker warnings if the cudatoolkit version doesn't match
+            - if: cuda_compiler_version != "None"
+              then:
+                - cuda-version ${{ cuda_compiler_version }}.*
+                - cuda-cudart-dev
+                - cuda-driver-dev
+        script:
+          # Lots more CMake files; just checking for one
+          - test -f $PREFIX/lib/cmake/Kokkos/KokkosConfig.cmake
+          # Testing explicitly for all shared libs, but not links
+          - if: linux
+            then:
+              - test -f $PREFIX/lib/libkokkoscontainers.so.${{ version }}
+              - test -f $PREFIX/lib/libkokkoscore.so.${{ version }}
+              # - test -f $PREFIX/lib/libkokkossimd.so.${{ version }}
+          - if: osx
+            then:
+              - test -f $PREFIX/lib/libkokkoscontainers.${{ version }}.dylib
+              - test -f $PREFIX/lib/libkokkoscore.${{ version }}.dylib
+              # - test -f $PREFIX/lib/libkokkossimd.${{ version }}.dylib
+          # There are lots more headers; only test for a few.
+          # Dumps many headers directly into include/,
+          # but all files are prefixed with Kokkos_
+          - test -f $PREFIX/include/Kokkos_Core.hpp
+          # These are all the binaries
+          - test -f $PREFIX/bin/hpcbind
+          - test -f $PREFIX/bin/kokkos_launch_compiler
+          - if: cuda_compiler_version != "None"
+            then:
+              - test -f $PREFIX/bin/nvcc_wrapper
+              # Test compilation with kokkos
+              - cd example/build_cmake_installed
+              # Prevent error during configuration due to CUDA::cudart not found
+              - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt
+              - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release .
+              - cmake --build .
+              - ./example 1000 --help
+          - if: cuda_compiler_version == "None" and linux
+            then:
+              # Test compilation with kokkos
+              - cd example/build_cmake_installed
+              - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release .
+              - cmake --build .
+              - ./example 1000 --help
+  - if: win
+    then:
+      - requirements:
+          run:
+            - ${{ compiler('cxx') }}
+            - if: cuda_compiler_version != "None"
+              then:
+                - ${{ compiler('cuda') }}
+            - ${{ compiler('fortran') }}
+            - cmake 3.27.*
+            - ninja
+            - if: cuda_compiler_version != "None"
+              then:
+                - cuda-version ${{ cuda_compiler_version }}.*
+                - cuda-cudart-dev
+        script:
+          # Lots more CMake files; just checking for one
+          - if not exist %LIBRARY_LIB%\cmake\Kokkos\KokkosConfig.cmake exit 1
+          - if not exist %LIBRARY_LIB%\kokkoscontainers.lib exit 1
+          - if not exist %LIBRARY_LIB%\kokkoscore.lib exit 1
+          # - if not exist %LIBRARY_LIB%\kokkossimd.lib exit 1
+          - if not exist %LIBRARY_BIN%\kokkoscontainers.dll exit 1
+          - if not exist %LIBRARY_BIN%\kokkoscore.dll exit 1
+          # - if not exist %LIBRARY_BIN%\kokkossimd.dll exit 1
+          # There are lots more headers; only test for a few.
+          # Dumps many headers directly into include/,
+          # but all files are prefixed with Kokkos_
+          - if not exist %LIBRARY_INC%\Kokkos_Core.hpp exit 1
+          # These are all the binaries
+          - if not exist %LIBRARY_BIN%\hpcbind exit 1
+          - if not exist %LIBRARY_BIN%\kokkos_launch_compiler exit 1
+          - if not exist %LIBRARY_BIN%\nvcc_wrapper exit 1
+          # Test compilation with kokkos
+          # for the moment the compilation on windows block the runner
+          # - cd example\build_cmake_installed
+          # - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release .
+          # - cmake --build .
+          # - example 1000 --help
+
+about:
+  homepage: https://kokkos.org/
+  summary: >
+    Kokkos C++ Performance Portability Programming EcoSystem: The Programming Model - Parallel Execution and Memory Abstraction
+  description: >
+    Kokkos Core implements a programming model in C++ for writing performance portable applications targeting all major HPC platforms. For that purpose it provides abstractions for both parallel execution of code and data management. Kokkos is designed to target complex node architectures with N-level memory hierarchies
+    and multiple types of execution resources. It currently can use CUDA, HIP, SYCL, HPX, OpenMP and C++ threads as backend programming models with several other backends in development.
+  license: BSD-3-Clause
+  license_file: LICENSE
+  documentation: https://github.com/kokkos/kokkos/wiki
+  repository: https://github.com/kokkos/kokkos
+
+extra:
+  recipe-maintainers:
+    - vincentmr
+    - BastianZim
+    - carterbox
+    - fbordeu
