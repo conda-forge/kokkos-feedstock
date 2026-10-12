@@ -1,13 +1,12 @@
 schema_version: 1
 
 context:
-  name: kokkos
   version: "5.2.1"
   build_number: 3
   cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
-  name: ${{ name|lower }}
+  name: kokkos
   version: ${{ version }}
 
 source:
@@ -15,7 +14,7 @@ source:
   sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
 
 build:
-  number: ${{ build_number + priority | int * 100 }}
+  number: ${{ build_number + (priority | default(0) | int) * 100 }}
   skip:
     - win and cuda_compiler_version != "None"
     - cuda_compiler_version == "None" and cuda_arch_version != "None"
