@@ -14,8 +14,11 @@ source:
   sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
 
 build:
-  number: ${{ build_number }}
-  skip: win and cuda_compiler_version != "None"
+  number: ${{ build_number + priority | int * 100 }}
+  skip:
+    - win and cuda_compiler_version != "None"
+    - cuda_compiler_version == "None" and cuda_arch_version != "None"
+    - cuda_compiler_version != "None" and cuda_arch_version == "None"
   string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring if cuda_compiler_version != "None" else "" }}h${{ hash }}_${{ build_number }}
   script:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
@@ -29,7 +32,7 @@ build:
   # lowest arch supported by each compiler version and include PTX for later archs
     env:
       Kokkos_CUDA_ARGS: ${{ "-DKokkos_ENABLE_CUDA=ON" if cuda_compiler_version != "None" else "-DKokkos_ENABLE_CUDA=OFF" }}
-      Kokkos_OPT_ARGS: -DKokkos_ARCH_AMPERE80=ON
+      Kokkos_OPT_ARGS: ${{ "-DKokkos_ARCH_" ~ Kokkos_ARCH ~ ":BOOL=ON" if Kokkos_ARCH != "None" else "" }}
       Kokkos_TEST_ARGS: -DKokkos_ENABLE_TESTS=OFF
 
 requirements:
@@ -54,6 +57,7 @@ requirements:
       then: libgomp
     - if: cuda_compiler_version != "None"
       then:
+        - cuda-arch ${{ cuda_arch_version }}.*
         # Will get nvcc linker warnings if the cudatoolkit version doesn't match
         - cuda-version ${{ cuda_compiler_version }}.*
         - cuda-cudart-dev
@@ -81,6 +85,7 @@ tests:
             # Will get nvcc linker warnings if the cudatoolkit version doesn't match
             - if: cuda_compiler_version != "None"
               then:
+                - cuda-arch ${{ cuda_arch_version }}.*
                 - cuda-version ${{ cuda_compiler_version }}.*
                 - cuda-cudart-dev
                 - cuda-driver-dev
@@ -137,6 +142,7 @@ tests:
             - ninja
             - if: cuda_compiler_version != "None"
               then:
+                - cuda-arch ${{ cuda_arch_version }}.*
                 - cuda-version ${{ cuda_compiler_version }}.*
                 - cuda-cudart-dev
         script:
