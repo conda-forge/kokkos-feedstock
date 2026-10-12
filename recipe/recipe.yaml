@@ -39,6 +39,9 @@ build:
 requirements:
   run_exports:
     - ${{ pin_subpackage("kokkos") }}
+  ignore_run_exports:
+    by_name:
+      - cuda-version
   build:
     - cmake >=3.21.1,<4
     - ${{ compiler('cxx') }}
@@ -66,7 +69,9 @@ requirements:
           then: cuda-driver-dev
   run:
     - if: cuda_compiler_version != "None"
-      then: __cuda
+      then:
+        - __cuda
+        - ${{ pin_compatible("cuda-version", lower_bound="x", upper_bound="x") }}
 
 tests:
   - if: unix
