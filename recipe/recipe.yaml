@@ -127,7 +127,8 @@ tests:
               # Test compilation with kokkos
               - cd example/build_cmake_installed
               # Prevent error during configuration due to CUDA::cudart not found
-              - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt
+              # Must come after project() so the platform is initialized
+              - sed -i 's/^find_package(Kokkos/find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n&/' CMakeLists.txt
               - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release .
               - cmake --build .
               # Running example requires loading the CUDA driver
