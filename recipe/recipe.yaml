@@ -12,6 +12,8 @@ package:
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/${{ version }}.tar.gz
   sha256: 491fe02cb127559dd3c996f6693686f1eab00a53fd5c184e18e663896884175e
+  patches:
+    - patches/0001-Avoid-min-macro-in-hwloc.patch
 
 build:
   number: ${{ build_number + (priority | default(0) | int) * 100 }}
