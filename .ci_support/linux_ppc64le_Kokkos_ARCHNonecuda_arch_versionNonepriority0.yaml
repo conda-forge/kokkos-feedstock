@@ -1,3 +1,5 @@
+Kokkos_ARCH:
+- None
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -6,8 +8,8 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- cuda-nvcc
+cuda_arch_version:
+- None
 cuda_compiler_version:
 - None
 cxx_compiler:
@@ -15,14 +17,21 @@ cxx_compiler:
 cxx_compiler_version:
 - '15'
 docker_image:
-- quay.io/condaforge/linux-anvil-aarch64:alma10
+- quay.io/condaforge/linux-anvil-ppc64le:alma10
 fortran_compiler:
 - gfortran
 fortran_compiler_version:
 - '15'
+libhwloc:
+- 2.13.0
+priority:
+- '0'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 zip_keys:
+- - cuda_arch_version
+  - Kokkos_ARCH
+  - priority
 - - cxx_compiler_version
   - fortran_compiler_version
   - c_stdlib_version
