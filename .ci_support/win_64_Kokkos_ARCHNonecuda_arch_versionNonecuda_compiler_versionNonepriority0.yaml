@@ -8,6 +8,8 @@ channel_targets:
 - conda-forge main
 cuda_arch_version:
 - None
+cuda_compiler:
+- cuda-nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
