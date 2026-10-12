@@ -18,7 +18,6 @@ source:
 build:
   number: ${{ build_number + (priority | default(0) | int) * 100 }}
   skip:
-    - win and cuda_compiler_version != "None"
     - cuda_compiler_version == "None" and cuda_arch_version != "None"
     - cuda_compiler_version != "None" and cuda_arch_version == "None"
     - match(cuda_compiler_version, ">=13.0") and match(cuda_arch_version, "<7.5")
@@ -55,6 +54,9 @@ requirements:
     - if: unix
       then:
         - sed
+    - if: win
+      then:
+        - sd
   host:
     - libhwloc
     - if: osx
@@ -88,7 +90,7 @@ tests:
               then:
                 - ${{ compiler('cuda') }}
             - ${{ compiler('fortran') }}
-            - cmake 3.27.*
+            - cmake >=3.27
             - ninja
             # Will get nvcc linker warnings if the cudatoolkit version doesn't match
             - if: cuda_compiler_version != "None"
@@ -139,14 +141,18 @@ tests:
               - ./example 1000 --help
   - if: win
     then:
-      - requirements:
+      - files:
+          source:
+            - example/build_cmake_installed
+            - example/build_cmake_installed_kk_as_language
+        requirements:
           run:
             - ${{ compiler('cxx') }}
             - if: cuda_compiler_version != "None"
               then:
                 - ${{ compiler('cuda') }}
             - ${{ compiler('fortran') }}
-            - cmake 3.27.*
+            - cmake >=3.27
             - ninja
             - if: cuda_compiler_version != "None"
               then:
@@ -171,11 +177,23 @@ tests:
           - if not exist %LIBRARY_BIN%\kokkos_launch_compiler exit 1
           - if not exist %LIBRARY_BIN%\nvcc_wrapper exit 1
           # Test compilation with kokkos
-          # for the moment the compilation on windows block the runner
-          # - cd example\build_cmake_installed
-          # - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release .
-          # - cmake --build .
-          # - example 1000 --help
+          # flang puts clang++ on PATH; Kokkos flags are MSVC-style, so force cl
+          - set CC=cl
+          - set CXX=cl
+          # Short build dirs: the object path limit is 250 characters
+          # This example compiles C++ with cl, which cannot compile CUDA
+          - if: cuda_compiler_version == "None"
+            then:
+              - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release -S example\build_cmake_installed -B b1
+              - cmake --build b1
+              - ctest --test-dir b1 --output-on-failure
+          # Kokkos is built with COMPILE_AS_CMAKE_LANGUAGE on Windows
+          - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release -S example\build_cmake_installed_kk_as_language -B b2
+          - cmake --build b2
+          # Running a CUDA example requires loading the CUDA driver
+          - if: cuda_compiler_version == "None"
+            then:
+              - ctest --test-dir b2 --output-on-failure
 
 about:
   homepage: https://kokkos.org/
