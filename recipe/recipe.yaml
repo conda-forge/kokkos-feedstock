@@ -1,8 +1,8 @@
 schema_version: 1
 
 context:
-  version: "5.2.1"
-  build_number: 3
+  version: "5.2.2"
+  build_number: 0
   cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/${{ version }}.tar.gz
-  sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
+  sha256: 491fe02cb127559dd3c996f6693686f1eab00a53fd5c184e18e663896884175e
 
 build:
   number: ${{ build_number + (priority | default(0) | int) * 100 }}
