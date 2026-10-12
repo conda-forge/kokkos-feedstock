@@ -19,6 +19,7 @@ build:
     - win and cuda_compiler_version != "None"
     - cuda_compiler_version == "None" and cuda_arch_version != "None"
     - cuda_compiler_version != "None" and cuda_arch_version == "None"
+    - match(cuda_compiler_version, ">=13.0") and match(cuda_arch_version, "<7.5")
   string: ${{ cuda_build_string if cuda_compiler_version != "None" and cuda_arch_version != "None" else "" }}h${{ hash }}_${{ build_number }}
   script:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
