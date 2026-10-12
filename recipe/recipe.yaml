@@ -3,7 +3,8 @@ schema_version: 1
 context:
   name: kokkos
   version: "5.2.1"
-  build_number: 2
+  build_number: 3
+  cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
   name: ${{ name|lower }}
@@ -19,7 +20,7 @@ build:
     - win and cuda_compiler_version != "None"
     - cuda_compiler_version == "None" and cuda_arch_version != "None"
     - cuda_compiler_version != "None" and cuda_arch_version == "None"
-  string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring if cuda_compiler_version != "None" else "" }}h${{ hash }}_${{ build_number }}
+  string: ${{ cuda_build_string if cuda_compiler_version != "None" and cuda_arch_version != "None" else "" }}h${{ hash }}_${{ build_number }}
   script:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
   # for each platform for desktop chips released since 2012 (10 years)
