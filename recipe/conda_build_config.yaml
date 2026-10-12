@@ -3,6 +3,7 @@ Kokkos_ARCH:
   - "BLACKWELL100"
   - "HOPPER90"
   - "AMPERE80"
+  - "TURING75"
   - "VOLTA70"
   - "PASCAL60"
   - "MAXWELL50"
@@ -14,6 +15,7 @@ cuda_arch_version:
   - 10.0
   - 9.0
   - 8.0
+  - 7.5
   - 7.0
   - 6.0
   - 5.0
@@ -22,6 +24,7 @@ cuda_arch_version:
 # We should rank the variants in case multiple variants match a user's machine
 # Higher numbers are higher priority
 priority:
+  - 8
   - 7
   - 6
   - 5
