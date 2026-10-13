@@ -196,7 +196,7 @@ tests:
           # Running a CUDA example requires loading the CUDA driver
           - if: cuda_compiler_version == "None"
             then:
-          - ctest --test-dir b2 --output-on-failure
+              - ctest --test-dir b2 --output-on-failure
 
 about:
   homepage: https://kokkos.org/
