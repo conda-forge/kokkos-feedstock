@@ -1,0 +1,20 @@
+--- a/core/src/impl/Kokkos_hwloc.cpp
++++ b/core/src/impl/Kokkos_hwloc.cpp
+@@ -442,7 +442,7 @@
+ 
+           // Enforce symmetry by taking the minimum:
+ 
+-          pu_per_core = std::min(pu_per_core, pu_count);
++          pu_per_core = (std::min)(pu_per_core, pu_count);
+ 
+           if (pu_count != pu_per_core) symmetric = false;
+         }
+@@ -452,7 +452,7 @@
+ 
+       // Enforce symmetry by taking the minimum:
+ 
+-      core_per_root = std::min(core_per_root, core_count);
++      core_per_root = (std::min)(core_per_root, core_count);
+ 
+       if (core_count != core_per_root) symmetric = false;
+     }

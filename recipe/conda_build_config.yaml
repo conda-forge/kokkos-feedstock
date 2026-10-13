@@ -1,0 +1,41 @@
+Kokkos_ARCH:
+  - "BLACKWELL120"
+  - "BLACKWELL100"
+  - "HOPPER90"
+  - "AMPERE80"
+  - "TURING75"
+  - "VOLTA70"
+  - "PASCAL60"
+  - "MAXWELL50"
+  - "None"
+
+# These strings define the corresponding compatible compute capabilities
+cuda_arch_version:
+  - 12.0
+  - 10.0
+  - 9.0
+  - 8.0
+  - 7.5
+  - 7.0
+  - 6.0
+  - 5.0
+  - "None"
+
+# We should rank the variants in case multiple variants match a user's machine
+# Higher numbers are higher priority
+priority:
+  - 8
+  - 7
+  - 6
+  - 5
+  - 4
+  - 3
+  - 2
+  - 1
+  - 0
+
+zip_keys:
+  -
+    - cuda_arch_version
+    - Kokkos_ARCH
+    - priority

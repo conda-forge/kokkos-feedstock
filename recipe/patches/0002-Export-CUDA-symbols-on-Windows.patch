@@ -1,0 +1,206 @@
+diff --git a/cmake/KokkosCore_config.h.in b/cmake/KokkosCore_config.h.in
+index fbc0839..08db90d 100644
+--- a/cmake/KokkosCore_config.h.in
++++ b/cmake/KokkosCore_config.h.in
+@@ -16,6 +16,8 @@
+ #define KOKKOS_VERSION_MINOR @KOKKOS_VERSION_MINOR@
+ #define KOKKOS_VERSION_PATCH @KOKKOS_VERSION_PATCH@
+ 
++#cmakedefine KOKKOS_IMPL_BUILD_SHARED_LIBS
++
+ /* Execution Spaces */
+ #cmakedefine KOKKOS_ENABLE_SERIAL
+ #cmakedefine KOKKOS_ENABLE_OPENMP
+diff --git a/cmake/kokkos_arch.cmake b/cmake/kokkos_arch.cmake
+index 4bdcb6b..d0cfb05 100644
+--- a/cmake/kokkos_arch.cmake
++++ b/cmake/kokkos_arch.cmake
+@@ -842,6 +842,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR "x${CMAKE_CXX_SIMULATE_ID}" STREQUAL
+   compiler_specific_defs(Clang _CRT_SECURE_NO_WARNINGS)
+ endif()
+ 
++# MSVC needs another flag to allow using __VA_OPT__ (required by CCCL in CUDA 13)
++if(KOKKOS_CXX_COMPILER_ID STREQUAL NVIDIA)
++  compiler_specific_options(COMPILER_ID KOKKOS_CXX_HOST_COMPILER_ID MSVC -Xcompiler=/Zc:preprocessor)
++endif()
++
+ #Right now we cannot get the compiler ID when cross-compiling, so just check
+ #that HIP is enabled
+ if(KOKKOS_ENABLE_HIP)
+diff --git a/cmake/kokkos_tribits.cmake b/cmake/kokkos_tribits.cmake
+index 83fbc96..41925d3 100644
+--- a/cmake/kokkos_tribits.cmake
++++ b/cmake/kokkos_tribits.cmake
+@@ -198,6 +198,9 @@ macro(KOKKOS_CONFIGURE_CORE)
+     KokkosCore_Config_HeaderSet.in KokkosCore_Config_DeclareBackend.hpp "KOKKOS_DECLARE" "decl/Kokkos_Declare"
+     "${KOKKOS_ENABLED_DEVICES}"
+   )
++  if(BUILD_SHARED_LIBS)
++    set(KOKKOS_IMPL_BUILD_SHARED_LIBS ON)
++  endif()
+   configure_file(cmake/KokkosCore_config.h.in KokkosCore_config.h @ONLY)
+ endmacro()
+ 
+@@ -385,6 +388,7 @@ function(KOKKOS_ADD_LIBRARY LIBRARY_NAME)
+     set_target_properties(
+       ${LIBRARY_NAME} PROPERTIES VERSION ${Kokkos_VERSION} SOVERSION ${Kokkos_VERSION_MAJOR}.${Kokkos_VERSION_MINOR}
+     )
++    target_compile_definitions(${LIBRARY_NAME} PRIVATE KOKKOS_IMPL_EXPORT_SYMBOLS)
+   endif()
+ 
+   kokkos_internal_add_library_install(${LIBRARY_NAME})
+diff --git a/core/src/CMakeLists.txt b/core/src/CMakeLists.txt
+index da3a751..845b131 100644
+--- a/core/src/CMakeLists.txt
++++ b/core/src/CMakeLists.txt
+@@ -27,6 +27,9 @@ if(NOT desul_FOUND)
+       set(DESUL_ATOMICS_ENABLE_OPENACC ON)
+     endif()
+   endif()
++  if(BUILD_SHARED_LIBS)
++    set(DESUL_IMPL_BUILD_SHARED_LIBS ON)
++  endif()
+   configure_file(
+     ${KOKKOS_SOURCE_DIR}/tpls/desul/Config.hpp.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/desul/atomics/Config.hpp
+   )
+@@ -143,6 +146,9 @@ kokkos_lib_include_directories(
+ )
+ if(NOT desul_FOUND)
+   target_include_directories(kokkoscore SYSTEM PUBLIC $<BUILD_INTERFACE:${KOKKOS_SOURCE_DIR}/tpls/desul/include>)
++  if(BUILD_SHARED_LIBS)
++    target_compile_definitions(kokkoscore PRIVATE DESUL_IMPL_EXPORT_SYMBOLS)
++  endif()
+ endif()
+ 
+ if(Kokkos_ENABLE_IMPL_MDSPAN)
+diff --git a/core/src/Cuda/Kokkos_Cuda_Instance.cpp b/core/src/Cuda/Kokkos_Cuda_Instance.cpp
+index 8c730d4..e6d9917 100644
+--- a/core/src/Cuda/Kokkos_Cuda_Instance.cpp
++++ b/core/src/Cuda/Kokkos_Cuda_Instance.cpp
+@@ -747,12 +747,14 @@ int g_cuda_space_factory_initialized =
+     initialize_space_factory<Cuda>("150_Cuda");
+ 
+ int CudaInternal::m_cudaArch = -1;
+-cudaDeviceProp CudaInternal::m_deviceProp;
++KOKKOS_IMPL_EXPORT cudaDeviceProp CudaInternal::m_deviceProp;
+ std::set<int> CudaInternal::cuda_devices = {};
+-std::map<int, unsigned long *> CudaInternal::constantMemHostStagingPerDevice =
+-    {};
+-std::map<int, cudaEvent_t> CudaInternal::constantMemReusablePerDevice = {};
+-std::map<int, std::mutex> CudaInternal::constantMemMutexPerDevice     = {};
++KOKKOS_IMPL_EXPORT std::map<int, unsigned long *>
++    CudaInternal::constantMemHostStagingPerDevice = {};
++KOKKOS_IMPL_EXPORT std::map<int, cudaEvent_t>
++    CudaInternal::constantMemReusablePerDevice = {};
++KOKKOS_IMPL_EXPORT std::map<int, std::mutex>
++    CudaInternal::constantMemMutexPerDevice = {};
+ 
+ }  // namespace Impl
+ 
+diff --git a/core/src/Cuda/Kokkos_Cuda_Instance.hpp b/core/src/Cuda/Kokkos_Cuda_Instance.hpp
+index a6136fe..573e82a 100644
+--- a/core/src/Cuda/Kokkos_Cuda_Instance.hpp
++++ b/core/src/Cuda/Kokkos_Cuda_Instance.hpp
+@@ -94,7 +94,7 @@ class CudaInternal {
+   static int m_cudaArch;
+   static int concurrency();
+ 
+-  static cudaDeviceProp m_deviceProp;
++  KOKKOS_IMPL_EXPORT static cudaDeviceProp m_deviceProp;
+ 
+   // Scratch Spaces for Reductions
+   mutable std::size_t m_scratchSpaceCount;
+@@ -121,9 +121,11 @@ class CudaInternal {
+   bool was_finalized   = false;
+ 
+   static std::set<int> cuda_devices;
+-  static std::map<int, unsigned long*> constantMemHostStagingPerDevice;
+-  static std::map<int, cudaEvent_t> constantMemReusablePerDevice;
+-  static std::map<int, std::mutex> constantMemMutexPerDevice;
++  KOKKOS_IMPL_EXPORT static std::map<int, unsigned long*>
++      constantMemHostStagingPerDevice;
++  KOKKOS_IMPL_EXPORT static std::map<int, cudaEvent_t>
++      constantMemReusablePerDevice;
++  KOKKOS_IMPL_EXPORT static std::map<int, std::mutex> constantMemMutexPerDevice;
+ 
+   static CudaInternal& singleton();
+ 
+diff --git a/core/src/Kokkos_Macros.hpp b/core/src/Kokkos_Macros.hpp
+index 4ac3c9e..d71ab7c 100644
+--- a/core/src/Kokkos_Macros.hpp
++++ b/core/src/Kokkos_Macros.hpp
+@@ -709,4 +709,14 @@ static constexpr bool kokkos_omp_on_host() { return false; }
+ #define KOKKOS_IMPL_ENFORCE_EMPTY_BASE_OPTIMIZATION
+ #endif
+ 
++#if defined(KOKKOS_IMPL_BUILD_SHARED_LIBS) && defined(_WIN32)
++#ifdef KOKKOS_IMPL_EXPORT_SYMBOLS
++#define KOKKOS_IMPL_EXPORT __declspec(dllexport)
++#else
++#define KOKKOS_IMPL_EXPORT __declspec(dllimport)
++#endif
++#else
++#define KOKKOS_IMPL_EXPORT
++#endif
++
+ #endif  // #ifndef KOKKOS_MACROS_HPP
+diff --git a/tpls/desul/Config.hpp.cmake.in b/tpls/desul/Config.hpp.cmake.in
+index c4ef3a8..09ef6cb 100644
+--- a/tpls/desul/Config.hpp.cmake.in
++++ b/tpls/desul/Config.hpp.cmake.in
+@@ -18,4 +18,6 @@ SPDX-License-Identifier: (BSD-3-Clause)
+ #cmakedefine DESUL_ATOMICS_ENABLE_OPENACC
+ #cmakedefine DESUL_ATOMICS_ENABLE_OPENMP
+ 
++#cmakedefine DESUL_IMPL_BUILD_SHARED_LIBS
++
+ #endif
+diff --git a/tpls/desul/include/desul/atomics/Lock_Array_CUDA.hpp b/tpls/desul/include/desul/atomics/Lock_Array_CUDA.hpp
+index ebfb817..255f05b 100644
+--- a/tpls/desul/include/desul/atomics/Lock_Array_CUDA.hpp
++++ b/tpls/desul/include/desul/atomics/Lock_Array_CUDA.hpp
+@@ -19,8 +19,8 @@ namespace Impl {
+ 
+ /// \brief This global variable in Host space is the central definition
+ ///        of these arrays.
+-extern int32_t* CUDA_SPACE_ATOMIC_LOCKS_DEVICE_h;
+-extern int32_t* CUDA_SPACE_ATOMIC_LOCKS_NODE_h;
++DESUL_IMPL_EXPORT extern int32_t* CUDA_SPACE_ATOMIC_LOCKS_DEVICE_h;
++DESUL_IMPL_EXPORT extern int32_t* CUDA_SPACE_ATOMIC_LOCKS_NODE_h;
+ 
+ /// \brief After this call, the g_host_cuda_lock_arrays variable has
+ ///        valid, initialized arrays.
+diff --git a/tpls/desul/include/desul/atomics/Macros.hpp b/tpls/desul/include/desul/atomics/Macros.hpp
+index d11beb0..3d2b4b4 100644
+--- a/tpls/desul/include/desul/atomics/Macros.hpp
++++ b/tpls/desul/include/desul/atomics/Macros.hpp
+@@ -167,4 +167,14 @@ static constexpr bool desul_impl_omp_on_host() { return false; }
+ #endif
+ #endif
+ 
++#if defined(DESUL_IMPL_BUILD_SHARED_LIBS) && defined(_WIN32)
++#ifdef DESUL_IMPL_EXPORT_SYMBOLS
++#define DESUL_IMPL_EXPORT __declspec(dllexport)
++#else
++#define DESUL_IMPL_EXPORT __declspec(dllimport)
++#endif
++#else
++#define DESUL_IMPL_EXPORT
++#endif
++
+ #endif  // DESUL_ATOMICS_MACROS_HPP_
+diff --git a/tpls/desul/src/Lock_Array_CUDA.cpp b/tpls/desul/src/Lock_Array_CUDA.cpp
+index 155f336..29125e4 100644
+--- a/tpls/desul/src/Lock_Array_CUDA.cpp
++++ b/tpls/desul/src/Lock_Array_CUDA.cpp
+@@ -36,8 +36,8 @@ __global__ void init_lock_arrays_cuda_kernel() {
+ 
+ namespace Impl {
+ 
+-int32_t* CUDA_SPACE_ATOMIC_LOCKS_DEVICE_h = nullptr;
+-int32_t* CUDA_SPACE_ATOMIC_LOCKS_NODE_h = nullptr;
++DESUL_IMPL_EXPORT int32_t* CUDA_SPACE_ATOMIC_LOCKS_DEVICE_h = nullptr;
++DESUL_IMPL_EXPORT int32_t* CUDA_SPACE_ATOMIC_LOCKS_NODE_h = nullptr;
+ 
+ // Putting this into anonymous namespace so we don't have multiple defined symbols
+ // When linking in more than one copy of the object file
