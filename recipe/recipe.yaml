@@ -3,7 +3,7 @@ schema_version: 1
 context:
   version: "4.7.04"
   so_version: ${{ (version | split("."))[0] | int ~ "." ~ (version | split("."))[1] | int ~ "." ~ (version | split("."))[2] | int }}
-  build_number: 0
+  build_number: 1
   cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
