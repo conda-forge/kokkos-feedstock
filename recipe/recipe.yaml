@@ -1,22 +1,27 @@
 schema_version: 1
 
 context:
-  name: kokkos
-  version: "5.2.1"
-  build_number: 2
+  version: "5.2.2"
+  build_number: 0
+  cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
-  name: ${{ name|lower }}
+  name: kokkos
   version: ${{ version }}
 
 source:
   url: https://github.com/kokkos/kokkos/archive/refs/tags/${{ version }}.tar.gz
-  sha256: 2b94b8db0ab093f0a3cacc282c737e4ba590542b783e6785a9209004ba9842a3
+  sha256: 491fe02cb127559dd3c996f6693686f1eab00a53fd5c184e18e663896884175e
+  patches:
+    - patches/0001-Avoid-min-macro-in-hwloc.patch
 
 build:
-  number: ${{ build_number }}
-  skip: win and cuda_compiler_version != "None"
-  string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring if cuda_compiler_version != "None" else "" }}h${{ hash }}_${{ build_number }}
+  number: ${{ build_number + (priority | default(0) | int) * 100 }}
+  skip:
+    - cuda_compiler_version == "None" and cuda_arch_version != "None"
+    - cuda_compiler_version != "None" and cuda_arch_version == "None"
+    - match(cuda_compiler_version, ">=13.0") and match(cuda_arch_version, "<7.5")
+  string: ${{ cuda_build_string if cuda_compiler_version != "None" and cuda_arch_version != "None" else "" }}h${{ hash }}_${{ build_number }}
   script:
   # Search acronyms on https://en.wikichip.org/ to enable optimizations
   # for each platform for desktop chips released since 2012 (10 years)
@@ -29,12 +34,15 @@ build:
   # lowest arch supported by each compiler version and include PTX for later archs
     env:
       Kokkos_CUDA_ARGS: ${{ "-DKokkos_ENABLE_CUDA=ON" if cuda_compiler_version != "None" else "-DKokkos_ENABLE_CUDA=OFF" }}
-      Kokkos_OPT_ARGS: -DKokkos_ARCH_AMPERE80=ON
+      Kokkos_OPT_ARGS: ${{ "-DKokkos_ARCH_" ~ Kokkos_ARCH ~ ":BOOL=ON" if Kokkos_ARCH != "None" else "" }}
       Kokkos_TEST_ARGS: -DKokkos_ENABLE_TESTS=OFF
 
 requirements:
   run_exports:
     - ${{ pin_subpackage("kokkos") }}
+  ignore_run_exports:
+    by_name:
+      - cuda-version
   build:
     - cmake >=3.21.1,<4
     - ${{ compiler('cxx') }}
@@ -46,13 +54,18 @@ requirements:
     - if: unix
       then:
         - sed
+    - if: win
+      then:
+        - sd
   host:
+    - libhwloc
     - if: osx
       then: llvm-openmp
     - if: linux
       then: libgomp
     - if: cuda_compiler_version != "None"
       then:
+        - cuda-arch ${{ cuda_arch_version }}.*
         # Will get nvcc linker warnings if the cudatoolkit version doesn't match
         - cuda-version ${{ cuda_compiler_version }}.*
         - cuda-cudart-dev
@@ -60,7 +73,9 @@ requirements:
           then: cuda-driver-dev
   run:
     - if: cuda_compiler_version != "None"
-      then: __cuda
+      then:
+        - __cuda
+        - ${{ pin_compatible("cuda-version", lower_bound="x", upper_bound="x") }}
 
 tests:
   - if: unix
@@ -75,11 +90,12 @@ tests:
               then:
                 - ${{ compiler('cuda') }}
             - ${{ compiler('fortran') }}
-            - cmake 3.27.*
+            - cmake >=3.27
             - ninja
             # Will get nvcc linker warnings if the cudatoolkit version doesn't match
             - if: cuda_compiler_version != "None"
               then:
+                - cuda-arch ${{ cuda_arch_version }}.*
                 - cuda-version ${{ cuda_compiler_version }}.*
                 - cuda-cudart-dev
                 - cuda-driver-dev
@@ -111,7 +127,8 @@ tests:
               # Test compilation with kokkos
               - cd example/build_cmake_installed
               # Prevent error during configuration due to CUDA::cudart not found
-              - echo -e "find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n$(cat CMakeLists.txt)" > CMakeLists.txt
+              # Must come after project() so the platform is initialized
+              - sed -i 's/^find_package(Kokkos/find_package(CUDAToolkit REQUIRED COMPONENTS cudart cuda_driver)\n&/' CMakeLists.txt
               - cmake -GNinja ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=Release .
               - cmake --build .
               # Running example requires loading the CUDA driver
@@ -125,17 +142,22 @@ tests:
               - ./example 1000 --help
   - if: win
     then:
-      - requirements:
+      - files:
+          source:
+            - example/build_cmake_installed
+            - example/build_cmake_installed_kk_as_language
+        requirements:
           run:
             - ${{ compiler('cxx') }}
             - if: cuda_compiler_version != "None"
               then:
                 - ${{ compiler('cuda') }}
             - ${{ compiler('fortran') }}
-            - cmake 3.27.*
+            - cmake >=3.27
             - ninja
             - if: cuda_compiler_version != "None"
               then:
+                - cuda-arch ${{ cuda_arch_version }}.*
                 - cuda-version ${{ cuda_compiler_version }}.*
                 - cuda-cudart-dev
         script:
@@ -156,11 +178,23 @@ tests:
           - if not exist %LIBRARY_BIN%\kokkos_launch_compiler exit 1
           - if not exist %LIBRARY_BIN%\nvcc_wrapper exit 1
           # Test compilation with kokkos
-          # for the moment the compilation on windows block the runner
-          # - cd example\build_cmake_installed
-          # - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release .
-          # - cmake --build .
-          # - example 1000 --help
+          # flang puts clang++ on PATH; Kokkos flags are MSVC-style, so force cl
+          - set CC=cl
+          - set CXX=cl
+          # Short build dirs: the object path limit is 250 characters
+          # This example compiles C++ with cl, which cannot compile CUDA
+          - if: cuda_compiler_version == "None"
+            then:
+              - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release -S example\build_cmake_installed -B b1
+              - cmake --build b1
+              - ctest --test-dir b1 --output-on-failure
+          # Kokkos is built with COMPILE_AS_CMAKE_LANGUAGE on Windows
+          - cmake -GNinja %CMAKE_ARGS% -DCMAKE_BUILD_TYPE=Release -S example\build_cmake_installed_kk_as_language -B b2
+          - cmake --build b2
+          # Running a CUDA example requires loading the CUDA driver
+          - if: cuda_compiler_version == "None"
+            then:
+              - ctest --test-dir b2 --output-on-failure
 
 about:
   homepage: https://kokkos.org/

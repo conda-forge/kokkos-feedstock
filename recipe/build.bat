@@ -20,6 +20,7 @@ cmake ^
 -DKokkos_ENABLE_EXAMPLES=OFF ^
 -DKokkos_ENABLE_SERIAL=ON ^
 -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
+-DKokkos_ENABLE_HWLOC:BOOL=ON ^
 %Kokkos_OPT_ARGS% ^
 %Kokkos_CUDA_ARGS% ^
 %Kokkos_TEST_ARGS% ^
@@ -36,3 +37,14 @@ if errorlevel 1 exit 1
 
 cmake --install .
 if errorlevel 1 exit 1
+
+:: Replace the build-time compiler path with the bare name, so that the compiler
+:: from the downstream environment's activation is used
+sd "set\(Kokkos_CXX_COMPILER \x22[A-Za-z]:/[^\x22]*/cl\.exe\x22\)" "find_program(Kokkos_CXX_COMPILER NAMES cl.exe)" "%LIBRARY_PREFIX%\lib\cmake\Kokkos\KokkosConfigCommon.cmake"
+if errorlevel 1 exit 1
+sd "[A-Za-z]:/[^\x22]*/cl\.exe" "cl.exe" "%LIBRARY_PREFIX%\bin\kokkos_launch_compiler"
+if errorlevel 1 exit 1
+:: sd succeeds even without a match, so fail if a path is left (findstr errorlevel
+:: 1 means none; ver clears it so the script does not end with a failure code)
+findstr /R /C:"[A-Za-z]:/.*cl\.exe" "%LIBRARY_PREFIX%\lib\cmake\Kokkos\KokkosConfigCommon.cmake" "%LIBRARY_PREFIX%\bin\kokkos_launch_compiler" && exit 1
+ver >nul

@@ -1,0 +1,30 @@
+Kokkos_ARCH:
+- None
+c_stdlib:
+- vs
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cuda_arch_version:
+- None
+cuda_compiler:
+- cuda-nvcc
+cuda_compiler_version:
+- None
+cxx_compiler:
+- vs2022
+fortran_compiler:
+- flang
+fortran_compiler_version:
+- '21'
+libhwloc:
+- 2.13.0
+priority:
+- '0'
+target_platform:
+- win-64
+zip_keys:
+- - cuda_arch_version
+  - Kokkos_ARCH
+  - priority

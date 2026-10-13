@@ -13,13 +13,14 @@ ${CMAKE_ARGS} \
 -DKokkos_ENABLE_OPENMP=ON \
 -DKokkos_ENABLE_EXAMPLES=OFF \
 -DKokkos_ENABLE_SERIAL=ON \
--DKokkos_ENABLE_LIBDL:BOOL=OFF \
+-DKokkos_ENABLE_LIBDL:BOOL=ON \
+-DKokkos_ENABLE_HWLOC:BOOL=ON \
 ${Kokkos_OPT_ARGS} \
 ${Kokkos_CUDA_ARGS} \
 ${Kokkos_TEST_ARGS} \
 -S ${SRC_DIR}
 
-cmake --build . -j1 --verbose
+cmake --build . -j ${CPU_COUNT} --verbose
 
 # Tests will take approximately 8 minutes
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
