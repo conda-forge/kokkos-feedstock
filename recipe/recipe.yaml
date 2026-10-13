@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   version: "5.2.2"
-  build_number: 0
+  build_number: 1
   cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
