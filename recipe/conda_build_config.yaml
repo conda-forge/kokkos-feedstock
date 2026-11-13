@@ -1,4 +1,4 @@
-Kokkos_ARCH:
+Kokkos_GPU_ARCH:
   - "BLACKWELL120"
   - "BLACKWELL100"
   - "HOPPER90"
@@ -37,5 +37,13 @@ priority:
 zip_keys:
   -
     - cuda_arch_version
-    - Kokkos_ARCH
+    - Kokkos_GPU_ARCH
     - priority
+
+# CPU architecture baseline, independent of the GPU arch in Kokkos_GPU_ARCH.
+# Only ARM is set, where the conda platform implies a minimum ISA:
+# https://github.com/conda-forge/kokkos-feedstock/issues/79
+Kokkos_CPU_ARCH:
+  - "ARMV80"  # [linux and aarch64]
+  - "ARMV84"  # [osx and arm64]
+  - "None"    # [not (linux and aarch64) and not (osx and arm64)]
