@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   version: "5.2.2"
-  build_number: 1
+  build_number: 2
   cuda_build_string: ${{ "cuda" ~ cuda_compiler_version | version_to_buildstring ~ "sm" ~ cuda_arch_version | version_to_buildstring }}
 
 package:
@@ -32,6 +32,14 @@ build:
 requirements:
   run_exports:
     - ${{ pin_subpackage("kokkos") }}
+    # If building against the kokkos CUDA variant, require a CUDA variant at runtime and a
+    # device at least as new as the architecture it was built for. This is because projects
+    # built against kokkos inherit its config. Builds against host-only can use either
+    # variant.
+    - if: cuda_compiler_version != "None"
+      then:
+        - kokkos * cuda*
+        - cuda-arch >=${{ cuda_arch_version }}
   ignore_run_exports:
     by_name:
       - cuda-version
