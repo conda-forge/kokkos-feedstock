@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/aarch64
 Kokkos_ARCH:
 - HOPPER90
 c_stdlib:

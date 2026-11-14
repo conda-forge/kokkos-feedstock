@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/ppc64le
 Kokkos_ARCH:
 - None
 c_stdlib:
