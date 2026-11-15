@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/aarch64
 Kokkos_ARCH:
 - AMPERE80
 c_stdlib:

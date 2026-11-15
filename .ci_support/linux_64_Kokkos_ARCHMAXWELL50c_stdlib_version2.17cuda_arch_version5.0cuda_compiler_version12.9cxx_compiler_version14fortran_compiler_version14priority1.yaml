@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 Kokkos_ARCH:
 - MAXWELL50
 c_stdlib:

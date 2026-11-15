@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 Kokkos_ARCH:
 - VOLTA70
 c_stdlib:

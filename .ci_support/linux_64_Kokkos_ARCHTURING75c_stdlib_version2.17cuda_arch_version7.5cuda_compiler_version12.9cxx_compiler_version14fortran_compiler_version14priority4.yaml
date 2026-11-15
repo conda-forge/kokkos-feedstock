@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 Kokkos_ARCH:
 - TURING75
 c_stdlib:
